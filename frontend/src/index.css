@@ -58,6 +58,7 @@
   border-radius: 20px;
   padding: 1rem;
   margin-top: 1rem;
+  box-shadow: 1px 0px 8px -2px #222;
 }
 
 .notes-header-wrapper > h1 {
@@ -84,6 +85,7 @@
   background-color: #e7e7e7;
   border-radius: 20px;
   padding: 1rem;
+  box-shadow: 1px 0px 8px -2px #222;
 }
 
 .card-body {
@@ -149,18 +151,21 @@
 
 /* AddNoteForm component */
 
+.add-note-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .form-row {
   display: flex;
-  flex-direction: row;
-  column-gap: 2rem;
 }
 
 .form-row > input {
-  width: 400px;
   padding-left: 0.5rem;
   border-radius: 15px;
   border: none;
   outline: none;
+  margin-right: 2rem;
 }
 
 .form-row > input:focus {
@@ -171,6 +176,15 @@
 @media screen and (max-width: 1000px) {
   .card-wrapper {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .notes-header-wrapper {
+    flex-direction: column;
+  }
+
+  .notes-header-wrapper > h1 {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }
 

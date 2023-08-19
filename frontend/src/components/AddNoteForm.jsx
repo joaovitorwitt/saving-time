@@ -14,20 +14,22 @@ export default function AddNoteForm({ onSubmit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-row">
-        <input
-          type="text"
-          value={newNote}
-          id="note"
-          onChange={(e) => setNewNote(e.target.value)}
-          autoComplete="off"
-          placeholder="Add new note"
-        />
-        <button className="add-note-button">
-          <i className="fa-solid fa-plus"></i>
-        </button>
-      </div>
-    </form>
+    <div className="add-note-wrapper">
+      <form onSubmit={handleSubmit} className="add-note-form">
+        <div className="form-row">
+          <input
+            type="text"
+            value={newNote}
+            id="note"
+            onChange={(e) => setNewNote(e.target.value)}
+            autoComplete="off"
+            placeholder="Add new note"
+          />
+          <button className="add-note-button">
+            <i className="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
