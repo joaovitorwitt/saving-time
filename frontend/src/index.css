@@ -181,6 +181,10 @@
     flex-direction: column;
   }
 
+  .add-note-wrapper {
+    width: 100%;
+  }
+
   .notes-header-wrapper > h1 {
     text-align: left;
     width: 100%;

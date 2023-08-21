@@ -15,6 +15,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import os
+import time
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -37,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -72,13 +76,32 @@ WSGI_APPLICATION = 'base.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+db_password = os.environ.get("DATABASE_PASSWORD")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+if db_password is None:
+    print("ERROR: environment variable for database password not configured")
+    exit()
+
+while True:
+    try:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'Saving Time',
+                'USER' : 'postgres',
+                'PASSWORD' : db_password,
+                'HOST' : 'localhost',
+                'PORT': '5432'
+            }
+        }
+        print("Serving connection...")
+        print("Connection was successful")
+        break
+
+    except Exception as e:
+        print("Serving connection....")
+        print("Connection failed")
+        time.wait(7)
 
 
 # Password validation
