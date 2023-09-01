@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import PomodoroBar from "./PomodoroBar";
 
 export default function PomodoroCard() {
   const [buttonText, setButtonText] = useState("Start");
   const [timer, setTimer] = useState("25:00");
   const [seconds, setSeconds] = useState(25 * 60);
   const [timerInterval, setTimerInterval] = useState(null);
+
+  const [resetButtonText, setResetButtonText] = useState("Reset");
 
   useEffect(() => {
     if (seconds <= 0) {
@@ -15,11 +18,11 @@ export default function PomodoroCard() {
 
   function changeButtonText() {
     if (buttonText === "Start") {
-      setButtonText("Reset");
+      setButtonText("Pause");
       startPomodoroTimer();
     } else {
       setButtonText("Start");
-      resetPomodoroTimer();
+      pausePomodoroTimer();
     }
   }
 
@@ -30,6 +33,24 @@ export default function PomodoroCard() {
       }, 1000)
     );
     console.log("START POMODORO TIMER");
+  }
+
+  function pausePomodoroTimer() {
+    // console.log("PAUSE POMODORO TIMER");
+    // let currentAmountOfMinutes = (seconds / 60).toString().split(".")[0];
+    // let currentAmountOfSeconds = (
+    //   (seconds / 60 - parseInt(currentAmountOfMinutes)) *
+    //   60
+    // )
+    //   .toString()
+    //   .split(".")[0];
+    // console.log(`MINUTES: ${currentAmountOfMinutes}`);
+    // console.log(`SECONDS: ${currentAmountOfSeconds}`);
+    // setSeconds(
+    //   parseInt(currentAmountOfMinutes) * parseInt(currentAmountOfSeconds)
+    // );
+    // setTimer(`${currentAmountOfMinutes}:${currentAmountOfSeconds}`);
+    clearInterval(timerInterval);
   }
 
   function resetPomodoroTimer() {
@@ -55,8 +76,13 @@ export default function PomodoroCard() {
             <button onClick={changeButtonText} className="start-btn">
               {buttonText}
             </button>
+
+            <button onClick={resetPomodoroTimer} className="start-btn">
+              {resetButtonText}
+            </button>
           </div>
         </div>
+        <PomodoroBar />
       </div>
     </section>
   );

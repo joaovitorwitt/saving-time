@@ -32,6 +32,10 @@
   background-color: #f5f5fd;
 }
 
+.pomodoro-card > .container {
+  flex-direction: column;
+}
+
 .grid-container {
   height: 100vh;
   display: grid;
@@ -230,6 +234,20 @@
 
 .form-row > input:focus {
   border: 1px solid #222;
+}
+
+/* pomodoro bar component */
+.pomodoro-bar-wrapper {
+  margin-top: 2rem;
+  width: 500px;
+  border: 1px solid black;
+  height: 10px;
+}
+
+.bar {
+  background-color: green;
+  width: 0;
+  height: 100%;
 }
 
 /* MEDIA QUERIES */
