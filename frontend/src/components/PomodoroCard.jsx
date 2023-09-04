@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import PomodoroBar from "./PomodoroBar";
 
-export default function PomodoroCard() {
+export default function PomodoroCard({
+  pomodoroTimer,
+  shortBreak,
+  rounds,
+  longBreak,
+}) {
   const [buttonText, setButtonText] = useState("Start");
   const [timer, setTimer] = useState("25:00");
   const [seconds, setSeconds] = useState(25 * 60);
   const [timerInterval, setTimerInterval] = useState(null);
 
   const [resetButtonText, setResetButtonText] = useState("Reset");
+  const [isPomodoroRunning, setIsPomodoroRunning] = useState(false);
 
   useEffect(() => {
     if (seconds <= 0) {
@@ -33,6 +39,7 @@ export default function PomodoroCard() {
       }, 1000)
     );
     console.log("START POMODORO TIMER");
+    setIsPomodoroRunning(true);
   }
 
   function pausePomodoroTimer() {
@@ -58,6 +65,8 @@ export default function PomodoroCard() {
     setSeconds(25 * 60);
     setTimer("25:00");
     console.log("RESET POMODORO TIMER");
+    setIsPomodoroRunning(false);
+    setButtonText("Start");
   }
 
   function formatTime(seconds) {
@@ -67,22 +76,25 @@ export default function PomodoroCard() {
     const formattedSeconds = String(remainingSeconds).padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
   }
+
   return (
     <section className="pomodoro-card">
       <div className="container">
         <div className="card-data">
           <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">
-            <button onClick={changeButtonText} className="start-btn">
+            <button onClick={changeButtonText} className="btn start-btn">
               {buttonText}
             </button>
 
-            <button onClick={resetPomodoroTimer} className="start-btn">
-              {resetButtonText}
-            </button>
+            {isPomodoroRunning && (
+              <button onClick={resetPomodoroTimer} className="btn reset-btn">
+                {resetButtonText}
+              </button>
+            )}
           </div>
         </div>
-        <PomodoroBar />
+        {/* <PomodoroBar /> */}
       </div>
     </section>
   );

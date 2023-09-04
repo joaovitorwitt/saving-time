@@ -5,6 +5,7 @@ import {
   faUser,
   faGear,
   faPen,
+  faHome,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar() {
@@ -12,6 +13,11 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="container">
         <nav className="sidebar-wrapper">
+          <Link to={"/"} className="navlink">
+            <FontAwesomeIcon icon={faHome} className="navlink-icon" />
+            <p>Dashboard</p>
+          </Link>
+
           <Link to={"/progress"} className="navlink">
             <FontAwesomeIcon icon={faChartColumn} className="navlink-icon" />
             <p>Progress</p>

@@ -4,15 +4,24 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Notes from "./pages/Notes";
+import Settings from "./pages/Settings";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/notes",
     element: <Notes />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

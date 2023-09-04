@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddNoteForm from "../components/AddNoteForm";
 import NotesList from "../components/NotesList";
+import Sidebar from "../components/Sidebar";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
@@ -42,11 +43,12 @@ export default function Notes() {
   }
 
   return (
-    <div className="container">
+    <div className="grid-container-notes">
       <div className="notes-header-wrapper">
         <h1>My Notes</h1>
         <AddNoteForm onSubmit={createNote} />
       </div>
+      <Sidebar />
       <NotesList notes={notes} deleteNote={deleteNote} />
     </div>
   );
