@@ -4,8 +4,8 @@ import PomodoroBar from "./PomodoroBar";
 export default function PomodoroCard({
   pomodoroTimer,
   shortBreak,
-  rounds,
   longBreak,
+  rounds,
 }) {
   const [buttonText, setButtonText] = useState("Start");
   const [timer, setTimer] = useState("25:00");
@@ -43,20 +43,6 @@ export default function PomodoroCard({
   }
 
   function pausePomodoroTimer() {
-    // console.log("PAUSE POMODORO TIMER");
-    // let currentAmountOfMinutes = (seconds / 60).toString().split(".")[0];
-    // let currentAmountOfSeconds = (
-    //   (seconds / 60 - parseInt(currentAmountOfMinutes)) *
-    //   60
-    // )
-    //   .toString()
-    //   .split(".")[0];
-    // console.log(`MINUTES: ${currentAmountOfMinutes}`);
-    // console.log(`SECONDS: ${currentAmountOfSeconds}`);
-    // setSeconds(
-    //   parseInt(currentAmountOfMinutes) * parseInt(currentAmountOfSeconds)
-    // );
-    // setTimer(`${currentAmountOfMinutes}:${currentAmountOfSeconds}`);
     clearInterval(timerInterval);
   }
 
@@ -81,7 +67,8 @@ export default function PomodoroCard({
     <section className="pomodoro-card">
       <div className="container">
         <div className="card-data">
-          <h1 className="timer">{formatTime(seconds)}</h1>
+          {/* <h1 className="timer">{formatTime(seconds)}</h1> */}
+          <h1 className="timer">{formatTime(pomodoroTimer)}</h1>
           <div className="buttons-wrapper">
             <button onClick={changeButtonText} className="btn start-btn">
               {buttonText}

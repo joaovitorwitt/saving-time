@@ -1,4 +1,20 @@
-export default function SettingsForm() {
+import { useState } from "react";
+
+export default function SettingsForm({ submitPomodoroSession }) {
+  const [pomodoroTimer, setPomodoroTimer] = useState("");
+  const [shortBreakTimer, setShortBreakTimer] = useState("");
+  const [longBreakTimer, setLongBreakTimer] = useState("");
+  const [pomodoroCount, setPomodoroCount] = useState("");
+
+  function handleSubmitOfPomodoroSession() {
+    submitPomodoroSession(
+      pomodoroTimer,
+      shortBreakTimer,
+      longBreakTimer,
+      pomodoroCount
+    );
+  }
+
   return (
     <div className="settings-form-wrapper">
       <div className="settings-form-data">
@@ -14,6 +30,8 @@ export default function SettingsForm() {
             className="form-control"
             id="pomodoro"
             placeholder="Pomodoro"
+            value={pomodoroTimer}
+            onChange={(e) => setPomodoroTimer(e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -23,6 +41,8 @@ export default function SettingsForm() {
             className="form-control"
             id="shortBreak"
             placeholder="Short Break"
+            value={shortBreakTimer}
+            onChange={(e) => setShortBreakTimer(e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -32,6 +52,8 @@ export default function SettingsForm() {
             className="form-control"
             id="longBreak"
             placeholder="Long Break"
+            value={longBreakTimer}
+            onChange={(e) => setLongBreakTimer(e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -41,9 +63,15 @@ export default function SettingsForm() {
             className="form-control"
             id="rounds"
             placeholder="Rounds"
+            value={pomodoroCount}
+            onChange={(e) => setPomodoroCount(e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          onSubmit={handleSubmitOfPomodoroSession}
+          className="btn btn-primary"
+        >
           Submit
         </button>
       </form>
