@@ -3,16 +3,13 @@ import PomodoroBar from "./PomodoroBar";
 
 export default function PomodoroCard({
   pomodoroTimer,
-  shortBreak,
-  longBreak,
-  rounds,
+  shortBreakTimer,
+  longBreakTimer,
+  pomodoroCount,
 }) {
   const [buttonText, setButtonText] = useState("Start");
-  const [timer, setTimer] = useState("25:00");
-  const [seconds, setSeconds] = useState(25 * 60);
+  const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60); // ==> 1500 seconds
   const [timerInterval, setTimerInterval] = useState(null);
-
-  const [resetButtonText, setResetButtonText] = useState("Reset");
   const [isPomodoroRunning, setIsPomodoroRunning] = useState(false);
 
   useEffect(() => {
@@ -38,7 +35,6 @@ export default function PomodoroCard({
         setSeconds((prevSeconds) => prevSeconds - 1);
       }, 1000)
     );
-    console.log("START POMODORO TIMER");
     setIsPomodoroRunning(true);
   }
 
@@ -48,14 +44,16 @@ export default function PomodoroCard({
 
   function resetPomodoroTimer() {
     clearInterval(timerInterval);
-    setSeconds(25 * 60);
-    setTimer("25:00");
-    console.log("RESET POMODORO TIMER");
+    setSeconds(parseInt(pomodoroTimer * 60));
     setIsPomodoroRunning(false);
     setButtonText("Start");
   }
 
   function formatTime(seconds) {
+    if (isNaN(seconds)) {
+      setSeconds(25 * 60);
+    }
+
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     const formattedMinutes = String(minutes).padStart(2, "0");
@@ -67,8 +65,7 @@ export default function PomodoroCard({
     <section className="pomodoro-card">
       <div className="container">
         <div className="card-data">
-          {/* <h1 className="timer">{formatTime(seconds)}</h1> */}
-          <h1 className="timer">{formatTime(pomodoroTimer)}</h1>
+          <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">
             <button onClick={changeButtonText} className="btn start-btn">
               {buttonText}
@@ -76,11 +73,17 @@ export default function PomodoroCard({
 
             {isPomodoroRunning && (
               <button onClick={resetPomodoroTimer} className="btn reset-btn">
-                {resetButtonText}
+                Reset
               </button>
             )}
           </div>
         </div>
+        {/* <div className="stuff">
+          {pomodoroTimer} ||
+          {shortBreakTimer} ||
+          {longBreakTimer} ||
+          {pomodoroCount} ||
+        </div> */}
         {/* <PomodoroBar /> */}
       </div>
     </section>
