@@ -328,6 +328,19 @@ body {
   font-size: 1.43rem;
 }
 
+/* current config container - delete later*/
+.display-current-config {
+  margin-top: 3rem;
+}
+
+.current-config-label {
+  font-weight: bold;
+}
+
+.current-config-value {
+  font-style: italic;
+}
+
 /* MEDIA QUERIES */
 @media screen and (max-width: 1000px) {
   .card-wrapper {

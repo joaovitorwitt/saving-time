@@ -18,25 +18,25 @@ export default function Sidebar() {
             <p>Dashboard</p>
           </Link>
 
-          <Link to={"/progress"} className="navlink">
+          {/* <Link to={"/progress"} className="navlink">
             <FontAwesomeIcon icon={faChartColumn} className="navlink-icon" />
             <p>Progress</p>
-          </Link>
+          </Link> */}
 
-          <Link to={"/notes"} className="navlink">
+          {/* <Link to={"/notes"} className="navlink">
             <FontAwesomeIcon icon={faPen} className="navlink-icon" />
             <p>Notes</p>
-          </Link>
+          </Link> */}
 
           <Link to={"/settings"} className="navlink">
             <FontAwesomeIcon icon={faGear} className="navlink-icon" />
             <p>Settings</p>
           </Link>
 
-          <Link to={"/profile"} className="navlink">
+          {/* <Link to={"/profile"} className="navlink">
             <FontAwesomeIcon icon={faUser} className="navlink-icon" />
             <p>Profile</p>
-          </Link>
+          </Link> */}
         </nav>
       </div>
     </aside>

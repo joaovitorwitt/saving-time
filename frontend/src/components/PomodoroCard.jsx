@@ -1,63 +1,109 @@
 import { useEffect, useState } from "react";
-import PomodoroBar from "./PomodoroBar";
+import startSound from "../assets/sounds/start.wav";
+import pauseSound from "../assets/sounds/pause.wav";
 
 export default function PomodoroCard({
-  pomodoroTimer,
-  shortBreakTimer,
-  longBreakTimer,
-  pomodoroCount,
+  pomodoroTimer = 25,
+  shortBreakTimer = 5,
+  longBreakTimer = 15,
+  pomodoroCount = 4,
 }) {
+  // change button text from "Start" to "Pause"
   const [buttonText, setButtonText] = useState("Start");
-  const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60); // ==> 1500 seconds
+
+  const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
   const [timerInterval, setTimerInterval] = useState(null);
   const [isPomodoroRunning, setIsPomodoroRunning] = useState(false);
+
+  // set current pomodoro session based on timer
+  const [currentSession, setCurrentSession] = useState("Pomodoro");
+  const [pomodoroSessionCount, setPomodoroSessionCount] = useState(1);
 
   useEffect(() => {
     if (seconds <= 0) {
       clearInterval(timerInterval);
       setButtonText("Start");
+
+      // When a Pomodoro session ends, check if it's time for a break or long break
+      if (currentSession === "Pomodoro") {
+        setPomodoroSessionCount((prevCount) => prevCount + 1);
+        if (pomodoroSessionCount === 4) {
+          setCurrentSession("Long Break");
+          setSeconds(parseInt(longBreakTimer) * 60);
+        } else {
+          setCurrentSession("Short Break");
+          setSeconds(parseInt(shortBreakTimer) * 60);
+        }
+      } else {
+        setCurrentSession("Pomodoro");
+        setSeconds(parseInt(pomodoroTimer) * 60);
+      }
     }
-  }, [seconds, timerInterval]);
+  }, [
+    seconds,
+    timerInterval,
+    currentSession,
+    longBreakTimer,
+    pomodoroSessionCount,
+    pomodoroTimer,
+    shortBreakTimer,
+  ]);
+
+  function playStartSound() {
+    const audio = new Audio(startSound);
+    audio.play();
+  }
+
+  function playPauseSound() {
+    const audio = new Audio(pauseSound);
+    audio.play();
+  }
 
   function changeButtonText() {
     if (buttonText === "Start") {
       setButtonText("Pause");
-      startPomodoroTimer();
+      startTimer();
     } else {
       setButtonText("Start");
-      pausePomodoroTimer();
+      pauseTimer();
     }
   }
 
-  function startPomodoroTimer() {
+  function startTimer() {
     setTimerInterval(
       setInterval(() => {
         setSeconds((prevSeconds) => prevSeconds - 1);
       }, 1000)
     );
     setIsPomodoroRunning(true);
+    playStartSound();
   }
 
-  function pausePomodoroTimer() {
+  function pauseTimer() {
     clearInterval(timerInterval);
-  }
-
-  function resetPomodoroTimer() {
-    clearInterval(timerInterval);
-    setSeconds(parseInt(pomodoroTimer * 60));
     setIsPomodoroRunning(false);
-    setButtonText("Start");
+    playPauseSound();
   }
 
-  function formatTime(seconds) {
-    if (isNaN(seconds)) {
-      setSeconds(25 * 60);
-    }
+  function resetTimer() {
+    clearInterval(timerInterval);
+    setButtonText("Start");
+    setIsPomodoroRunning(false);
 
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    if (currentSession === "Pomodoro") {
+      setSeconds(parseInt(pomodoroTimer) * 60);
+    } else if (currentSession === "Short Break") {
+      setSeconds(parseInt(shortBreakTimer) * 60);
+    } else if (currentSession === "Long Break") {
+      setSeconds(parseInt(longBreakTimer) * 60);
+    }
+  }
+
+  function formatTime(timeInSeconds) {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
     const formattedMinutes = String(minutes).padStart(2, "0");
-    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
@@ -70,21 +116,39 @@ export default function PomodoroCard({
             <button onClick={changeButtonText} className="btn start-btn">
               {buttonText}
             </button>
-
-            {isPomodoroRunning && (
-              <button onClick={resetPomodoroTimer} className="btn reset-btn">
-                Reset
-              </button>
-            )}
+            <button onClick={resetTimer} className="btn reset-btn">
+              Reset
+            </button>
           </div>
         </div>
-        {/* <div className="stuff">
-          {pomodoroTimer} ||
-          {shortBreakTimer} ||
-          {longBreakTimer} ||
-          {pomodoroCount} ||
-        </div> */}
-        {/* <PomodoroBar /> */}
+        <div className="display-current-config">
+          <div className="current-config-row">
+            <div className="current-config-label">Current Session:</div>
+            <div className="current-config-value">{currentSession}</div>
+          </div>
+          <div className="current-config-row">
+            <div className="current-config-label">Pomodoro Timer:</div>
+            <div className="current-config-value">
+              {formatTime(parseInt(pomodoroTimer) * 60)}
+            </div>
+          </div>
+          <div className="current-config-row">
+            <div className="current-config-label">Short Break Timer:</div>
+            <div className="current-config-value">
+              {formatTime(parseInt(shortBreakTimer) * 60)}
+            </div>
+          </div>
+          <div className="current-config-row">
+            <div className="current-config-label">Long Break Timer:</div>
+            <div className="current-config-value">
+              {formatTime(parseInt(longBreakTimer) * 60)}
+            </div>
+          </div>
+          <div className="current-config-row">
+            <div className="current-config-label">Pomodoro Session:</div>
+            <div className="current-config-value">{`${pomodoroSessionCount} of ${pomodoroCount}`}</div>
+          </div>
+        </div>
       </div>
     </section>
   );
