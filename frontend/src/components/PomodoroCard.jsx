@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import startSound from "../assets/sounds/start.wav";
 import pauseSound from "../assets/sounds/pause.wav";
+import resetSound from "../assets/sounds/reset.wav";
 
 export default function PomodoroCard({
   pomodoroTimer = 25,
@@ -10,6 +11,9 @@ export default function PomodoroCard({
 }) {
   // change button text from "Start" to "Pause"
   const [buttonText, setButtonText] = useState("Start");
+
+  // automatically starts pomodoro timer
+  const [autostartPomodoroTimer, setAutostartPomodoroTimer] = useState(false);
 
   const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
   const [timerInterval, setTimerInterval] = useState(null);
@@ -27,12 +31,13 @@ export default function PomodoroCard({
       // When a Pomodoro session ends, check if it's time for a break or long break
       if (currentSession === "Pomodoro") {
         setPomodoroSessionCount((prevCount) => prevCount + 1);
-        if (pomodoroSessionCount === 4) {
+        if (pomodoroSessionCount === pomodoroCount) {
           setCurrentSession("Long Break");
           setSeconds(parseInt(longBreakTimer) * 60);
         } else {
           setCurrentSession("Short Break");
           setSeconds(parseInt(shortBreakTimer) * 60);
+          startTimer();
         }
       } else {
         setCurrentSession("Pomodoro");
@@ -56,6 +61,11 @@ export default function PomodoroCard({
 
   function playPauseSound() {
     const audio = new Audio(pauseSound);
+    audio.play();
+  }
+
+  function playResetSound() {
+    const audio = new Audio(resetSound);
     audio.play();
   }
 
@@ -97,6 +107,7 @@ export default function PomodoroCard({
     } else if (currentSession === "Long Break") {
       setSeconds(parseInt(longBreakTimer) * 60);
     }
+    playResetSound();
   }
 
   function formatTime(timeInSeconds) {
@@ -122,7 +133,7 @@ export default function PomodoroCard({
           </div>
         </div>
         <div className="display-current-config">
-          <div className="current-config-row">
+          {/* <div className="current-config-row">
             <div className="current-config-label">Current Session:</div>
             <div className="current-config-value">{currentSession}</div>
           </div>
@@ -143,10 +154,14 @@ export default function PomodoroCard({
             <div className="current-config-value">
               {formatTime(parseInt(longBreakTimer) * 60)}
             </div>
-          </div>
+          </div> */}
           <div className="current-config-row">
             <div className="current-config-label">Pomodoro Session:</div>
             <div className="current-config-value">{`${pomodoroSessionCount} of ${pomodoroCount}`}</div>
+          </div>
+          <div className="current-config-row">
+            <input type="checkbox" />
+            <p>Autostart breaks?</p>
           </div>
         </div>
       </div>

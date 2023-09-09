@@ -33,6 +33,11 @@ export default function Sidebar() {
             <p>Settings</p>
           </Link>
 
+          <Link to={"/login"} className="navlink">
+            <FontAwesomeIcon icon={faUser} className="navlink-icon" />
+            <p>Login</p>
+          </Link>
+
           {/* <Link to={"/profile"} className="navlink">
             <FontAwesomeIcon icon={faUser} className="navlink-icon" />
             <p>Profile</p>
