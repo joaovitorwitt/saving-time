@@ -6,9 +6,9 @@ urlpatterns = [
 ]
 
 """
-    GET api/notes/get
-    GET api/notes/get/{id}
-    DELETE api/notes/delete/{id}
-    PUT api/notes/update/{id}
-    POST api/notes/create
+    GET api/v1/notes/get
+    GET api/v1/notes/get/{id}
+    DELETE api/v1/notes/delete/{id}
+    PUT api/v1/notes/update/{id}
+    POST api/v1/notes/create
 """

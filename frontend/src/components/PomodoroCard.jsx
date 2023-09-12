@@ -25,6 +25,7 @@ export default function PomodoroCard({
 
   useEffect(() => {
     if (seconds <= 0) {
+      console.log("CURRENT TIMER ENDED");
       clearInterval(timerInterval);
       setButtonText("Start");
 
@@ -86,13 +87,15 @@ export default function PomodoroCard({
       }, 1000)
     );
     setIsPomodoroRunning(true);
-    playStartSound();
+    // playStartSound();
+    console.log("TIMER STARTED");
   }
 
   function pauseTimer() {
     clearInterval(timerInterval);
     setIsPomodoroRunning(false);
     playPauseSound();
+    console.log("TIMER PAUSED");
   }
 
   function resetTimer() {
@@ -108,6 +111,7 @@ export default function PomodoroCard({
       setSeconds(parseInt(longBreakTimer) * 60);
     }
     playResetSound();
+    console.log("TIMER RESET");
   }
 
   function formatTime(timeInSeconds) {
@@ -121,6 +125,7 @@ export default function PomodoroCard({
   return (
     <section className="pomodoro-card">
       <div className="container">
+        <p>Session: {currentSession}</p>
         <div className="card-data">
           <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">
@@ -154,15 +159,11 @@ export default function PomodoroCard({
             <div className="current-config-value">
               {formatTime(parseInt(longBreakTimer) * 60)}
             </div>
-          </div> */}
+          </div> 
           <div className="current-config-row">
             <div className="current-config-label">Pomodoro Session:</div>
             <div className="current-config-value">{`${pomodoroSessionCount} of ${pomodoroCount}`}</div>
-          </div>
-          <div className="current-config-row">
-            <input type="checkbox" />
-            <p>Autostart breaks?</p>
-          </div>
+  </div> */}
         </div>
       </div>
     </section>
