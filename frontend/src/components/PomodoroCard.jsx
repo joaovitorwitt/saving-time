@@ -2,18 +2,13 @@ import { useEffect, useState } from "react";
 import startSound from "../assets/sounds/start.wav";
 import pauseSound from "../assets/sounds/pause.wav";
 import resetSound from "../assets/sounds/reset.wav";
+import endSound from "../assets/sounds/end.wav";
 
 export default function PomodoroCard({
   pomodoroTimer = 25,
   shortBreakTimer = 5,
-  longBreakTimer = 15,
-  pomodoroCount = 4,
 }) {
-  // change button text from "Start" to "Pause"
   const [buttonText, setButtonText] = useState("Start");
-
-  // automatically starts pomodoro timer
-  const [autostartPomodoroTimer, setAutostartPomodoroTimer] = useState(false);
 
   const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
   const [timerInterval, setTimerInterval] = useState(null);
@@ -21,39 +16,23 @@ export default function PomodoroCard({
 
   // set current pomodoro session based on timer
   const [currentSession, setCurrentSession] = useState("Pomodoro");
-  const [pomodoroSessionCount, setPomodoroSessionCount] = useState(1);
 
   useEffect(() => {
-    if (seconds <= 0) {
+    if (seconds <= 0 && currentSession === "Pomodoro") {
       console.log("CURRENT TIMER ENDED");
+      setCurrentSession("Short Break");
       clearInterval(timerInterval);
       setButtonText("Start");
-
-      // When a Pomodoro session ends, check if it's time for a break or long break
-      if (currentSession === "Pomodoro") {
-        setPomodoroSessionCount((prevCount) => prevCount + 1);
-        if (pomodoroSessionCount === pomodoroCount) {
-          setCurrentSession("Long Break");
-          setSeconds(parseInt(longBreakTimer) * 60);
-        } else {
-          setCurrentSession("Short Break");
-          setSeconds(parseInt(shortBreakTimer) * 60);
-          startTimer();
-        }
-      } else {
-        setCurrentSession("Pomodoro");
-        setSeconds(parseInt(pomodoroTimer) * 60);
-      }
+      setSeconds(parseInt(shortBreakTimer) * 60);
+      playEndSound();
+    } else if (seconds <= 0 && currentSession === "Short Break") {
+      setCurrentSession("Pomodoro");
+      clearInterval(timerInterval);
+      setButtonText("Start");
+      setSeconds(parseInt(pomodoroTimer) * 60);
+      playEndSound();
     }
-  }, [
-    seconds,
-    timerInterval,
-    currentSession,
-    longBreakTimer,
-    pomodoroSessionCount,
-    pomodoroTimer,
-    shortBreakTimer,
-  ]);
+  }, [seconds, timerInterval, currentSession, pomodoroTimer, shortBreakTimer]);
 
   function playStartSound() {
     const audio = new Audio(startSound);
@@ -67,6 +46,11 @@ export default function PomodoroCard({
 
   function playResetSound() {
     const audio = new Audio(resetSound);
+    audio.play();
+  }
+
+  function playEndSound() {
+    const audio = new Audio(endSound);
     audio.play();
   }
 
@@ -94,7 +78,7 @@ export default function PomodoroCard({
   function pauseTimer() {
     clearInterval(timerInterval);
     setIsPomodoroRunning(false);
-    playPauseSound();
+    // playPauseSound();
     console.log("TIMER PAUSED");
   }
 
@@ -105,12 +89,10 @@ export default function PomodoroCard({
 
     if (currentSession === "Pomodoro") {
       setSeconds(parseInt(pomodoroTimer) * 60);
-    } else if (currentSession === "Short Break") {
+    } else {
       setSeconds(parseInt(shortBreakTimer) * 60);
-    } else if (currentSession === "Long Break") {
-      setSeconds(parseInt(longBreakTimer) * 60);
     }
-    playResetSound();
+    // playResetSound();
     console.log("TIMER RESET");
   }
 

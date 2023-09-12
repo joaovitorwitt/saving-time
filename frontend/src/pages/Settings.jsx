@@ -7,28 +7,28 @@ export default function Settings() {
 
   function submitPomodoroSession(
     pomodoroTimer,
-    shortBreakTimer,
-    longBreakTimer,
-    pomodoroCount
+    shortBreakTimer
+    // longBreakTimer,
+    // pomodoroCount
   ) {
     console.log(`POMODORO TIMER: ${pomodoroTimer} minutes`);
     console.log(`SHORT BREAK TIMER: ${shortBreakTimer} minutes`);
-    console.log(`LONG BREAK TIMER: ${longBreakTimer} minutes`);
-    console.log(`POMODORO COUNT: ${pomodoroCount} sessions`);
+    // console.log(`LONG BREAK TIMER: ${longBreakTimer} minutes`);
+    // console.log(`POMODORO COUNT: ${pomodoroCount} sessions`);
   }
 
   const [pomodoroTimer, setPomodoroTimer] = useState("");
   const [shortBreakTimer, setShortBreakTimer] = useState("");
-  const [longBreakTimer, setLongBreakTimer] = useState("");
-  const [pomodoroCount, setPomodoroCount] = useState("");
+  // const [longBreakTimer, setLongBreakTimer] = useState("");
+  // const [pomodoroCount, setPomodoroCount] = useState("");
 
   function handleSubmitOfPomodoroSession(e) {
     e.preventDefault();
     const pomodoroSessionData = {
       pomodoroTimer,
       shortBreakTimer,
-      longBreakTimer,
-      pomodoroCount,
+      // longBreakTimer,
+      // pomodoroCount,
     };
 
     // take the user to the homepage
@@ -36,9 +36,9 @@ export default function Settings() {
 
     // clear the input fields
     setPomodoroTimer("");
-    setLongBreakTimer("");
     setShortBreakTimer("");
-    setPomodoroCount("");
+    // setLongBreakTimer("");
+    // setPomodoroCount("");
   }
 
   return (
@@ -78,7 +78,7 @@ export default function Settings() {
               onChange={(e) => setShortBreakTimer(e.target.value)}
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="longBreak">Long Break</label>
             <input
               type="number"
@@ -88,8 +88,8 @@ export default function Settings() {
               value={longBreakTimer}
               onChange={(e) => setLongBreakTimer(e.target.value)}
             />
-          </div>
-          <div className="form-group">
+          </div> */}
+          {/* <div className="form-group">
             <label htmlFor="rounds">Rounds</label>
             <input
               type="number"
@@ -99,7 +99,7 @@ export default function Settings() {
               value={pomodoroCount}
               onChange={(e) => setPomodoroCount(e.target.value)}
             />
-          </div>
+          </div> */}
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

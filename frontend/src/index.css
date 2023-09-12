@@ -24,6 +24,43 @@ body {
 /* MAIN PAGE GRID AREA */
 .header {
   grid-area: header;
+  background-color: #3a3a3a !important;
+}
+
+.open-sidebar-icon {
+  color: #98979d;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.close-sidebar-icon {
+  padding: 2rem 1rem;
+  color: #98979d;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.open-sidebar-icon:hover {
+  color: rgba(211, 205, 205, 0.589);
+}
+
+.mobile-content-wrapper {
+  /* display: none; */
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: #22222262;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.mobile-content {
+  position: relative;
+  width: 200px;
+  z-index: 4 !important;
+  height: 100vh;
+  background-color: #3a3a3a;
+  transition: width 800ms;
 }
 
 .sidebar {
@@ -44,9 +81,9 @@ body {
   height: 100vh;
   display: grid;
   grid-template-areas:
-    "sidebar main main"
-    "sidebar main main"
-    "sidebar main main";
+    "header header header"
+    "main main main"
+    "main main main";
   grid-template-columns: 1fr 5fr;
 }
 
@@ -112,6 +149,10 @@ body {
   text-decoration: none;
   border-radius: 10px;
   padding: 1rem;
+}
+
+.navlink p {
+  margin-right: 1rem;
 }
 
 .navlink:hover {
@@ -364,5 +405,39 @@ body {
 @media screen and (max-width: 860px) {
   .card-wrapper {
     grid-template-columns: 1fr;
+  }
+}
+
+/* mobile content when the screen is desktop */
+.sidebar-mobile {
+  display: none;
+}
+
+/* MOBILE DESIGN */
+@media screen and (max-width: 1000px) {
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar-mobile {
+    /* display: block; */
+    width: 100vw;
+    z-index: 98;
+    height: 100vh;
+    background-color: #3a3a3a48;
+    position: absolute;
+  }
+
+  .sidebar-mobile-wrapper {
+    background-color: white;
+    width: 200px;
+    height: 100vh;
+  }
+
+  .mobile-icon {
+    font-size: 2rem;
+    padding: 2rem;
+    cursor: pointer;
+    color: #98979d;
   }
 }

@@ -8,7 +8,7 @@ export default function HomePage() {
   const pomodoroSessionData = location.state?.pomodoroSessionData || {};
   return (
     <div className="grid-container">
-      <Sidebar />
+      <Header />
       <PomodoroCard {...pomodoroSessionData} />
     </div>
   );
