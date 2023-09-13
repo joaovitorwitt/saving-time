@@ -1,0 +1,20 @@
+.pomodoro-card > .container {
+  flex-direction: column;
+}
+
+.pomodoro-card > .container {
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  align-items: center;
+}
+
+.card-data > .timer {
+  font-size: 5rem;
+}
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  column-gap: 1rem;
+}

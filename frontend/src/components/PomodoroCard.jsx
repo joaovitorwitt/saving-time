@@ -3,6 +3,8 @@ import startSound from "../assets/sounds/start.wav";
 import pauseSound from "../assets/sounds/pause.wav";
 import resetSound from "../assets/sounds/reset.wav";
 import endSound from "../assets/sounds/end.wav";
+import Button from "./Button";
+import "../assets/styles/PomodoroCard.css";
 
 export default function PomodoroCard({
   pomodoroTimer = 25,
@@ -111,41 +113,18 @@ export default function PomodoroCard({
         <div className="card-data">
           <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">
-            <button onClick={changeButtonText} className="btn start-btn">
-              {buttonText}
-            </button>
-            <button onClick={resetTimer} className="btn reset-btn">
-              Reset
-            </button>
+            <Button
+              onClick={changeButtonText}
+              className={"btn"}
+              textContent={buttonText}
+            />
+
+            <Button
+              onClick={resetTimer}
+              className={"btn"}
+              textContent={"Reset"}
+            />
           </div>
-        </div>
-        <div className="display-current-config">
-          {/* <div className="current-config-row">
-            <div className="current-config-label">Current Session:</div>
-            <div className="current-config-value">{currentSession}</div>
-          </div>
-          <div className="current-config-row">
-            <div className="current-config-label">Pomodoro Timer:</div>
-            <div className="current-config-value">
-              {formatTime(parseInt(pomodoroTimer) * 60)}
-            </div>
-          </div>
-          <div className="current-config-row">
-            <div className="current-config-label">Short Break Timer:</div>
-            <div className="current-config-value">
-              {formatTime(parseInt(shortBreakTimer) * 60)}
-            </div>
-          </div>
-          <div className="current-config-row">
-            <div className="current-config-label">Long Break Timer:</div>
-            <div className="current-config-value">
-              {formatTime(parseInt(longBreakTimer) * 60)}
-            </div>
-          </div> 
-          <div className="current-config-row">
-            <div className="current-config-label">Pomodoro Session:</div>
-            <div className="current-config-value">{`${pomodoroSessionCount} of ${pomodoroCount}`}</div>
-  </div> */}
         </div>
       </div>
     </section>

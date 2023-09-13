@@ -1,15 +1,14 @@
 import { useLocation } from "react-router-dom";
-import Header from "../components/Header";
 import PomodoroCard from "../components/PomodoroCard";
-import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 
 export default function HomePage() {
   const location = useLocation();
   const pomodoroSessionData = location.state?.pomodoroSessionData || {};
   return (
-    <div className="grid-container">
-      <Header />
+    <>
+      <Navbar />
       <PomodoroCard {...pomodoroSessionData} />
-    </div>
+    </>
   );
 }

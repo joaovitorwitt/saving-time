@@ -1,0 +1,11 @@
+.not-found-wrapper {
+  margin-top: 4rem;
+  font-style: italic;
+  color: #3a3a3a;
+  text-align: center;
+}
+
+.not-found-warning {
+  margin: 1rem 0;
+  font-size: 1.43rem;
+}
