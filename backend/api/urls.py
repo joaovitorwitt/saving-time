@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from notes import views
+from users import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('notes.urls'))
+    path('api/v1/', include('notes.urls')),
+    path('api/v1/', include('users.urls'))
 ]
