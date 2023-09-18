@@ -51,6 +51,7 @@ def generate_token_for_user(request):
 
         user = User.objects.get(username=username)
         if compare_hashed_passwords(password, user.password):
+            refresh = RefreshToken.for_user(user)
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token)
