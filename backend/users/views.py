@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .serializers import UserSerializer
 from .utils import hash_password, compare_hashed_passwords
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -39,6 +41,24 @@ def create_user(request):
 
     except Exception as e:
         return Response({"message": str(e)})
+    
+
+@api_view(['POST'])
+def generate_token_for_user(request):
+    try:
+        username = request.data["username"]
+        password = request.data["password"]
+
+        user = User.objects.get(username=username)
+        if compare_hashed_passwords(password, user.password):
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token)
+            })
+        else:
+            return Response({"message": 'credentials are invalid'})
+    except Exception as error:
+        return Response({"message": str(error)})
 
 
 
@@ -80,3 +100,4 @@ def delete_user(request, id):
     
     except Exception as error:
         return Response({"message": str(error)})
+    
