@@ -1,3 +1,17 @@
+:root {
+  --pomodoro-primary-background-color: #2c2c39;
+  --pomodoro-timer-color: #f5f5fd;
+}
+
+[data-theme="light"] {
+  --pomodoro-primary-background-color: #fdfdfd;
+  --pomodoro-timer-color: #23232e;
+}
+
+.pomodoro-card {
+  background-color: var(--pomodoro-primary-background-color);
+}
+
 .pomodoro-card > .container {
   flex-direction: column;
 }
@@ -5,12 +19,17 @@
 .pomodoro-card > .container {
   display: flex;
   justify-content: center;
-  min-height: 80vh;
+  min-height: 100vh;
   align-items: center;
+}
+
+.pomodoro-card > .container > p {
+  color: var(--pomodoro-timer-color);
 }
 
 .card-data > .timer {
   font-size: 5rem;
+  color: var(--pomodoro-timer-color);
 }
 
 .buttons-wrapper {

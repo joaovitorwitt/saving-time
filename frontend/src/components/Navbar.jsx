@@ -4,18 +4,20 @@ import {
   faChartColumn,
   faUser,
   faGear,
-  faPen,
   faHome,
-  faBars,
-  faClose,
-  faUsersGear,
+  faSun,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import "../assets/styles/Navbar.css";
+import { useTheme } from "../main";
 
 export default function Navbar() {
+  const { currentTheme, toggleTheme } = useTheme();
+  const iconThemeIcon = currentTheme === "dark" ? faSun : faMoon;
+
   return (
-    <nav className="navbar">
+    <nav className="navbar" data-theme={currentTheme}>
       <ul className="navbar-nav">
         <li className="navbar-item">
           <Link to={"/"} className="navbar-link">
@@ -42,6 +44,13 @@ export default function Navbar() {
           <Link to={"/profile"} className="navbar-link">
             <FontAwesomeIcon className="navbar-icon" icon={faUser} />
             <span className="navbar-text">Profile</span>
+          </Link>
+        </li>
+
+        <li className="navbar-item">
+          <Link className="navbar-link" onClick={toggleTheme}>
+            <FontAwesomeIcon className="navbar-icon" icon={iconThemeIcon} />
+            <span className="navbar-text">Theme</span>
           </Link>
         </li>
       </ul>

@@ -5,13 +5,15 @@ import resetSound from "../assets/sounds/reset.wav";
 import endSound from "../assets/sounds/end.wav";
 import Button from "./Button";
 import "../assets/styles/PomodoroCard.css";
+import { useTheme } from "../main";
 
 export default function PomodoroCard({
   pomodoroTimer = 25,
   shortBreakTimer = 5,
 }) {
-  const [buttonText, setButtonText] = useState("Start");
+  const { currentTheme, toggleTheme } = useTheme();
 
+  const [buttonText, setButtonText] = useState("Start");
   const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
   const [timerInterval, setTimerInterval] = useState(null);
   const [isPomodoroRunning, setIsPomodoroRunning] = useState(false);
@@ -107,7 +109,7 @@ export default function PomodoroCard({
   }
 
   return (
-    <section className="pomodoro-card">
+    <section className="pomodoro-card" data-theme={currentTheme}>
       <div className="container">
         <p>Session: {currentSession}</p>
         <div className="card-data">

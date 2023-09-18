@@ -1,13 +1,27 @@
+:root {
+  --btn-background-color: #f5f5fd;
+  --btn-color: #23233e;
+  --btn-background-color-hover: #d5d5d8;
+  --btn-color-hover: #0c0c13;
+}
+
+[data-theme="light"] {
+  --btn-background-color: #23232e;
+  --btn-color: #f5f5fd;
+  --btn-background-color-hover: #141418;
+  --btn-color-hover: #f5f5fd;
+}
+
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 10px;
   border: none;
-  background-color: #23232e;
-  color: #f5f5fd;
+  background-color: var(--btn-background-color);
+  color: var(--btn-color);
   cursor: pointer;
 }
 
 .btn:hover {
-  background-color: #141418;
-  color: #f5f5fd;
+  background-color: var(--btn-background-color-hover);
+  color: var(--btn-color-hover);
 }

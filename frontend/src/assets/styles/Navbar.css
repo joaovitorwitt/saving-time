@@ -1,5 +1,19 @@
+:root {
+  --navbar-background-color: #23232e;
+  --navbar-icon-color: #b6b6b6;
+  --navbar-icon-color-hover: #ececec;
+  --navbar-icon-hover: #141418;
+}
+
+[data-theme="light"] {
+  --navbar-background-color: #f5f5fd;
+  --navbar-icon-color: #222222;
+  --navbar-icon-hover: #d5d5d8;
+  --navbar-icon-color-hover: #141418;
+}
+
 .navbar {
-  background-color: #23232e;
+  background-color: var(--navbar-background-color);
   position: fixed;
   transition: width 400ms ease;
 }
@@ -29,13 +43,13 @@
   text-decoration: none;
   filter: grayscale(100%) opacity(0.7);
   transition: 600ms;
-  color: #b6b6b6;
+  color: var(--navbar-icon-color);
 }
 
 .navbar-link:hover {
   filter: grayscale(0%) opacity(1);
-  color: #ececec;
-  background-color: #141418;
+  color: var(--navbar-icon-color-hover);
+  background-color: var(--navbar-icon-hover);
   /* transition: 6000ms; */
 }
 
