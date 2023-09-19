@@ -1,0 +1,53 @@
+:root {
+  --login-background-color: #2c2c39;
+  --login-text-color: #f5f5fd;
+  --login-input-background-color: #22222e;
+  --show-password-icon-color: #8a8a8d;
+}
+
+[data-theme="light"] {
+  --login-background-color: #fdfdfd;
+  --login-text-color: #23232e;
+  --login-input-background-color: #e6e6e7;
+}
+
+.login-page {
+  background-color: var(--login-background-color);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  position: relative;
+}
+
+.form-row input {
+  padding: 0.7rem;
+  border-radius: 15px;
+  border: none;
+  background-color: var(--login-input-background-color);
+  margin: 1rem 0;
+  color: var(--login-text-color);
+}
+
+.form-row input:focus {
+  border: none;
+  outline: 1px solid rgb(101, 11, 204);
+}
+
+.submit-input {
+  width: 100%;
+  cursor: pointer;
+  background-color: rgb(101, 11, 204) !important;
+  color: white !important;
+}
+
+.show-password-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 110px;
+  color: var(--show-password-icon-color);
+  cursor: pointer;
+}

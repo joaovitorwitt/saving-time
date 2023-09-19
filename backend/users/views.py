@@ -102,3 +102,32 @@ def delete_user(request, id):
     except Exception as error:
         return Response({"message": str(error)})
     
+
+
+@api_view(['POST'])
+def login_user(request):
+    try:
+        username = request.data["username"]
+        email = request.data["email"]
+        password = request.data["password"]
+
+        user = User.objects.get(username=username)
+
+        if email != user.email:
+            return Response({"message": "invalid email"})
+
+        if not compare_hashed_passwords(password, user.password):
+            return Response({"message": "invalid password",})
+
+        return Response({"message": "user logged in successfully", "status" : "success"})
+
+    except Exception as error:
+        return Response({"something went wrong": str(error)})
+    
+
+@api_view(['POST'])
+def register_user(request):
+    try:
+        return Response({"message": "user successfully registered"})
+    except Exception as error:
+        return Response({"message": str(error)})

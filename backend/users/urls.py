@@ -11,4 +11,7 @@ urlpatterns = [
     ################################################################
     path('token/', views.generate_token_for_user, name='token_obtain_pair'),
     path("token/refresh", TokenRefreshView.as_view(), name='token_refresh'),
+    ################################################################
+    path('login/', views.login_user, name='login'),
+    path('register/', views.register_user, name='register'),
 ]
