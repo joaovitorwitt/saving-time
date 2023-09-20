@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import { useTheme } from "../main";
 import "../assets/styles/RegisterPage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [passwordVisibility, setPasswordVisibility] = useState("password");
   const passwordVisibilityIcon =
@@ -33,11 +34,57 @@ export default function RegisterPage() {
       prevVisibility === "password" ? "text" : "password"
     );
   }
+
+  async function handleRegistration(event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/v1/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirm_password: confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        // registrations was successful
+        // redirect user to homepage
+        console.log("Successfully registered: ", data);
+      } else {
+        console.log(data);
+        console.log("Failed to register: ", data);
+        setErrorMessage(data.message);
+        console.log(errorMessage);
+      }
+    } catch (error) {
+      console.log("An error occurred: ", error);
+      setErrorMessage(error);
+      console.log(errorMessage);
+    }
+  }
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
   return (
     <>
       <Navbar />
       <div className="register-page" data-theme={currentTheme}>
-        <form className="register-form">
+        <form onSubmit={handleRegistration} className="register-form">
           <div className="form-row">
             <input
               type="text"
@@ -95,6 +142,8 @@ export default function RegisterPage() {
           <div className="form-row">
             <input type="submit" className="submit-input" value={"Register"} />
           </div>
+
+          <div className="error-message">{errorMessage}</div>
         </form>
       </div>
     </>

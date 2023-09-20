@@ -129,9 +129,33 @@ def login_user(request):
         return Response({"something went wrong": str(error)})
     
 
+
+
 @api_view(['POST'])
 def register_user(request):
     try:
-        return Response({"message": "user successfully registered"})
+        serializer = UserSerializer(data=request.data)
+
+        email = request.data["email"]
+
+        password = request.data["password"]
+        confirm_password = request.data["confirm_password"]
+
+        if password != confirm_password:
+            return Response({"message": "passwords dont match"})
+        
+        # check if email already exists
+        if User.objects.filter(email=email).exists():
+            return Response({"message": "email already exists"})
+        
+        if serializer.is_valid():
+            hashed_password = hash_password(serializer.validated_data["password"])
+            serializer.validated_data["password"] = hashed_password
+            serializer.save()
+            return Response({"message": "user successfully registered", "status": "success"})
+        else:
+            return Response({"message": "username already taken"})
+
+
     except Exception as error:
         return Response({"message": str(error)})

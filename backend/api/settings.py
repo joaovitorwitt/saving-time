@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'notes',
     'users',
     'rest_framework_simplejwt.token_blacklist',
-    'corsheaders'
+    'corsheaders',
+    'home'
 ]
 
 
