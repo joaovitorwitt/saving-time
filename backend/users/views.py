@@ -8,6 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth.models import User
 
+from django.core.exceptions import ObjectDoesNotExist
+
 # Create your views here.
 @api_view(['GET'])
 def list_users(request):
@@ -121,6 +123,8 @@ def login_user(request):
 
         return Response({"message": "user logged in successfully", "status" : "success"})
 
+    except ObjectDoesNotExist:
+        return Response({"message": "user does not exist"})
     except Exception as error:
         return Response({"something went wrong": str(error)})
     

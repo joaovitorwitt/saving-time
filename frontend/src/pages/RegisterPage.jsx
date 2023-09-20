@@ -1,0 +1,102 @@
+import Navbar from "../components/Navbar";
+import { useTheme } from "../main";
+import "../assets/styles/RegisterPage.css";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
+export default function RegisterPage() {
+  const { currentTheme, toggleTheme } = useTheme();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [passwordVisibility, setPasswordVisibility] = useState("password");
+  const passwordVisibilityIcon =
+    passwordVisibility === "password" ? faEye : faEyeSlash;
+
+  function togglePasswordVisibility() {
+    setPasswordVisibility((prevVisibility) =>
+      prevVisibility === "password" ? "text" : "password"
+    );
+  }
+
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+    useState("password");
+  const confirmPasswordVisibilityIcon =
+    confirmPasswordVisibility === "password" ? faEye : faEyeSlash;
+
+  function toggleConfirmPasswordVisibility() {
+    setConfirmPasswordVisibility((prevVisibility) =>
+      prevVisibility === "password" ? "text" : "password"
+    );
+  }
+  return (
+    <>
+      <Navbar />
+      <div className="register-page" data-theme={currentTheme}>
+        <form className="register-form">
+          <div className="form-row">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="off"
+              className="username-input"
+            />
+          </div>
+
+          <div className="form-row">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
+              className="email-input"
+            />
+          </div>
+
+          <div className="form-row">
+            <input
+              type={passwordVisibility}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="off"
+              className="password-input"
+            />
+            <FontAwesomeIcon
+              icon={passwordVisibilityIcon}
+              className="show-password-icon"
+              onClick={togglePasswordVisibility}
+            />
+          </div>
+
+          <div className="form-row">
+            <input
+              type={confirmPasswordVisibility}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="off"
+              className="password-input"
+            />
+            <FontAwesomeIcon
+              icon={confirmPasswordVisibilityIcon}
+              className="show-confirm-password-icon"
+              onClick={toggleConfirmPasswordVisibility}
+            />
+          </div>
+
+          <div className="form-row">
+            <input type="submit" className="submit-input" value={"Register"} />
+          </div>
+        </form>
+      </div>
+    </>
+  );
+}

@@ -1,0 +1,41 @@
+:root {
+  --register-background-color: #2c2c39;
+  --register-text-color: #f5f5fd;
+  --register-input-background-color: #22222e;
+}
+
+[data-theme="light"] {
+  --register-background-color: #fdfdfd;
+  --register-text-color: #23232e;
+  --register-input-background-color: #e6e6e7;
+}
+
+.register-page {
+  background-color: var(--register-background-color);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  width: 500px;
+  margin: 0 2%;
+  position: relative;
+}
+
+.show-password-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 190px;
+  color: var(--show-password-icon-color);
+  cursor: pointer;
+}
+
+.show-confirm-password-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 110px;
+  color: var(--show-password-icon-color);
+  cursor: pointer;
+}

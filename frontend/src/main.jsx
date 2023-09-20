@@ -7,6 +7,8 @@ import Settings from "./pages/Settings";
 import ErrorPage from "./pages/ErrorPage";
 import Progress from "./pages/Progress";
 import LoginPage from "./pages/LoginPage";
+import PrivateRoutes from "./utils/PrivateRoutes";
+import RegisterPage from "./pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
     errorElement: <ErrorPage />,
   },
 ]);

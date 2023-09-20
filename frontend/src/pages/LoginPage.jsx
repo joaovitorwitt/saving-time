@@ -4,7 +4,7 @@ import { useTheme } from "../main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ export default function LoginPage() {
         navigate("/");
         console.log(data);
       } else {
+        console.log(data);
         setErrorMessage(data.message);
         console.log(errorMessage);
       }
@@ -59,11 +60,26 @@ export default function LoginPage() {
     );
   }
 
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
   return (
     <>
       <Navbar />
       <div className="login-page" data-theme={currentTheme}>
         <form onSubmit={handleLogin} className="login-form">
+          <h3 className="register-page-cta">
+            First time here?{" "}
+            <Link className="register-page-link" to={"/register"}>
+              create an account
+            </Link>
+          </h3>
           <div className="form-row">
             <input
               type="text"
@@ -106,6 +122,9 @@ export default function LoginPage() {
           </div>
           <div className="form-row">
             <input type="submit" value="Login" className="submit-input" />
+          </div>
+          <div className="error-message">
+            <p>{errorMessage}</p>
           </div>
         </form>
       </div>

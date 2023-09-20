@@ -21,6 +21,8 @@
 
 .login-form {
   position: relative;
+  width: 500px;
+  margin: 0 2%;
 }
 
 .form-row input {
@@ -30,6 +32,7 @@
   background-color: var(--login-input-background-color);
   margin: 1rem 0;
   color: var(--login-text-color);
+  width: 100%;
 }
 
 .form-row input:focus {
@@ -50,4 +53,25 @@
   bottom: 110px;
   color: var(--show-password-icon-color);
   cursor: pointer;
+}
+
+.error-message {
+  color: rgb(206, 87, 87);
+  position: absolute;
+  font-style: italic;
+}
+
+.register-page-cta {
+  color: var(--login-text-color);
+  font-weight: lighter;
+}
+
+.register-page-link {
+  text-decoration: none;
+  color: rgb(101, 11, 204);
+  font-weight: lighter;
+}
+
+.register-page-link:hover {
+  color: rgb(108, 43, 182);
 }
