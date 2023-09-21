@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,6 +20,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [authTokens, setAuthTokens] = useState(() =>
+    localStorage.getItem("authTokens")
+      ? JSON.parse(localStorage.getItem("authTokens"))
+      : null
+  );
+  const [userInfo, setUserInfo] = useState(() =>
+    localStorage.getItem("authTokens")
+      ? jwtDecode(localStorage.getItem("authTokens"))
+      : null
+  );
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -39,10 +51,16 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.status === "success") {
-        // Login was successful
-        // TODO redirect user to homepage
-        navigate("/");
+        setAuthTokens(jwtDecode(data.access));
         console.log(data);
+        console.log(jwtDecode(data.access));
+        setUserInfo(jwtDecode(data.access));
+        localStorage.setItem("authTokens", JSON.stringify(data));
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify(jwtDecode(data.access))
+        );
+        navigate("/");
       } else {
         console.log(data);
         setErrorMessage(data.message);
@@ -116,7 +134,7 @@ export default function LoginPage() {
             />
             <FontAwesomeIcon
               icon={passwordVisibilityIcon}
-              className="show-password-icon"
+              className="show-password-icon-login"
               onClick={togglePasswordVisibility}
             />
           </div>

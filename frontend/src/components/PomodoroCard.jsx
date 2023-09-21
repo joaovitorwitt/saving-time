@@ -21,6 +21,12 @@ export default function PomodoroCard({
   // set current pomodoro session based on timer
   const [currentSession, setCurrentSession] = useState("Pomodoro");
 
+  // set username for current session
+  const [username, setUsername] = useState("");
+
+  // set greeting state for current session
+  const [greeting, setGreeting] = useState("");
+
   useEffect(() => {
     if (seconds <= 0 && currentSession === "Pomodoro") {
       console.log("CURRENT TIMER ENDED");
@@ -100,6 +106,12 @@ export default function PomodoroCard({
     console.log("TIMER RESET");
   }
 
+  let currentUser = localStorage.getItem("userInfo")
+    ? localStorage.getItem("userInfo")
+    : null;
+
+  let currentUserID = JSON.parse(currentUser);
+
   function formatTime(timeInSeconds) {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
@@ -108,10 +120,53 @@ export default function PomodoroCard({
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  // effect state to greet the user based on the current hour of the day
+  useEffect(() => {
+    const currentHours = new Date().getHours();
+
+    if (currentHours >= 4 && currentHours < 12) {
+      setGreeting(`Good Morning, ${username}`);
+    } else if (currentHours >= 12 && currentHours < 18) {
+      setGreeting(`Good Afternoon, ${username}`);
+    } else {
+      setGreeting(`Good Night, ${username}`);
+    }
+  });
+
+  async function getUserInformationFromDatabase(userId) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/get/user/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network error");
+      }
+      const data = await response.json();
+
+      console.log(data);
+      const theUser = data.user.username;
+      console.log(theUser);
+
+      setUsername(theUser);
+    } catch (error) {
+      console.error("Failed to get user information: ", error);
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser === null) {
+      console.log("CURRENT USER IS NULL");
+      setUsername("Stranger");
+    } else {
+      getUserInformationFromDatabase(currentUserID.user_id);
+    }
+  }, []);
+
   return (
     <section className="pomodoro-card" data-theme={currentTheme}>
       <div className="container">
         <p>Session: {currentSession}</p>
+        <p>{greeting}</p>
         <div className="card-data">
           <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">

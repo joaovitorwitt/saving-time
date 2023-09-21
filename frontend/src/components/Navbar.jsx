@@ -12,12 +12,20 @@ import {
 import { useState, useEffect } from "react";
 import "../assets/styles/Navbar.css";
 import { useTheme } from "../main";
+import jwtDecode from "jwt-decode";
 
 export default function Navbar() {
   const { currentTheme, toggleTheme } = useTheme();
   const iconThemeIcon = currentTheme === "dark" ? faSun : faMoon;
 
-  const isLoggedIn = false;
+  // if there is the local storage value with the user info
+  // we want to set isLoggedIn to true
+
+  const isLoggedIn = localStorage.getItem("userInfo") ? true : false;
+
+  function logoutUser() {
+    localStorage.removeItem("userInfo");
+  }
 
   return (
     <nav className="navbar" data-theme={currentTheme}>
@@ -49,6 +57,16 @@ export default function Navbar() {
               <Link to={"/profile"} className="navbar-link">
                 <FontAwesomeIcon className="navbar-icon" icon={faUser} />
                 <span className="navbar-text">Profile</span>
+              </Link>
+            </li>
+
+            <li className="navbar-item">
+              <Link to={"/login"} className="navbar-link" onClick={logoutUser}>
+                <FontAwesomeIcon
+                  className="navbar-icon"
+                  icon={faRightToBracket}
+                />
+                <span className="navbar-text">Logout</span>
               </Link>
             </li>
           </>

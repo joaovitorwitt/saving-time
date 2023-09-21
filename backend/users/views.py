@@ -7,7 +7,7 @@ from .utils import hash_password, compare_hashed_passwords
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth.models import User
-
+from django.contrib.auth import login, login
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -121,7 +121,10 @@ def login_user(request):
         if not compare_hashed_passwords(password, user.password):
             return Response({"message": "invalid password",})
 
-        return Response({"message": "user logged in successfully", "status" : "success"})
+        refresh = RefreshToken.for_user(user)
+        login(request, user)
+
+        return Response({"message": "user logged in successfully", "status" : "success", "refresh": str(refresh), "access": str(refresh.access_token)})
 
     except ObjectDoesNotExist:
         return Response({"message": "user does not exist"})
