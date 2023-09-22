@@ -162,3 +162,58 @@ def register_user(request):
 
     except Exception as error:
         return Response({"message": str(error)})
+
+
+
+@api_view(["PUT"])
+def update_username(request, id):
+    try:
+        username_for_update = request.data['username']
+        password_from_request = request.data['password']
+        user = User.objects.get(id=id)
+
+        # 1st validate if password is correct for that user
+        if not compare_hashed_passwords(password_from_request, user.password):
+            return Response({"message": "wrong password", "password from request": password_from_request, "password from database": user.password})
+        
+        # 2nd check if new username already exists on the database
+        users_from_database = User.objects.filter(username=username_for_update).first()
+        if users_from_database:
+            return Response({"message": "username already exists"})
+        
+        # 3rd set username for update to the one from the database
+        user.username = username_for_update
+        user.save()
+        return Response({"message": "username updated successfully"})
+
+    except Exception as error:
+        return Response({"message": "something went wrong", "error": str(error)})
+    
+
+@api_view(['PUT'])
+def update_password(request, id):
+    try:
+        user = User.objects.get(id=id)
+        old_password_from_request = request.data["old_password"]
+        new_password_from_request = request.data["new_password"]
+        confirm_new_password_from_request = request.data["confirm_new_password"]
+
+        # 1st check if old password actually matches with the one from the database
+        if not compare_hashed_passwords(old_password_from_request, user.password):
+            return Response({"message": "invalid current password"})
+        
+        # 2nd check if new password fields are equal
+        if new_password_from_request != confirm_new_password_from_request:
+            return Response({"message": "passwords dont match"})
+        
+        # 3rd check if new password is not equal to old password
+        if new_password_from_request == old_password_from_request: # also new password == confirm new password
+            return Response({"message": "new password is equal to old one"})
+        
+        user.password = hash_password(new_password_from_request)
+        user.save()
+
+        return Response({"message": "password updated successfully"})
+
+    except Exception as error:
+        return Response({"message": "something went wrong"})

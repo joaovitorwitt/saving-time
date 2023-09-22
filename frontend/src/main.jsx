@@ -9,6 +9,7 @@ import Progress from "./pages/Progress";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RegisterPage from "./pages/RegisterPage";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
     errorElement: <ErrorPage />,
   },
 ]);

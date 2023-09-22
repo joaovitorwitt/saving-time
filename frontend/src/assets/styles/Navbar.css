@@ -16,6 +16,7 @@
   background-color: var(--navbar-background-color);
   position: fixed;
   transition: width 400ms ease;
+  z-index: 999;
 }
 
 .navbar-nav {
