@@ -4,10 +4,12 @@ import "../assets/styles/Profile.css";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { currentTheme } = useTheme();
   const userId = JSON.parse(localStorage.getItem("userInfo"))["user_id"];
+  const navigate = useNavigate();
 
   // Changing password feature
   const [currentPassword, setCurrentPassword] = useState("");
@@ -18,6 +20,12 @@ export default function Profile() {
   const [newUsername, setNewUsername] = useState("");
   const [confirmPasswordForUsername, setConfirmPasswordForUsername] =
     useState("");
+
+  // Delete account feature
+  const [validateUsername, setValidateUsername] = useState("");
+  const [validatePassword, setValidatePassword] = useState("");
+  const [validateDeleteString, setValidateDeleteString] = useState("");
+  const [deleteEndpointCall, setDeleteEndpointCall] = useState(false);
 
   // Open/close modal feature
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,6 +80,58 @@ export default function Profile() {
       const data = await response.json();
 
       console.log(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async function validatingDataForAccountDeletion(event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/delete/account/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: validateUsername,
+            password: validatePassword,
+            delete_string: validateDeleteString,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      if (data.message === "delete method called") {
+        // call delete endpoint method
+        setDeleteEndpointCall(true);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async function deleteUserAccountAfterValidation(event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/delete/user/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      if (data.message === "user deleted successfully") {
+        localStorage.removeItem("userInfo");
+        navigate("/");
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -186,21 +246,40 @@ export default function Profile() {
             >
               <div className="delete-modal-content">
                 <div className="modal-header">
+                  <p>Are You Sure?</p>
                   <FontAwesomeIcon
                     icon={faXmark}
                     onClick={toggleModalVisibility}
                     className="close-modal-btn"
                   />
                 </div>
-                <form className="delete-account-form">
+                <form
+                  className="delete-account-form"
+                  onSubmit={validatingDataForAccountDeletion}
+                >
                   <div className="input-row-delete">
-                    <input type="text" placeholder="Current username" />
+                    <input
+                      type="text"
+                      placeholder="Current username"
+                      value={validateUsername}
+                      onChange={(e) => setValidateUsername(e.target.value)}
+                    />
                   </div>
                   <div className="input-row-delete">
-                    <input type="text" placeholder="Please, type 'delete'" />
+                    <input
+                      type="text"
+                      placeholder="Please, type 'delete'"
+                      value={validateDeleteString}
+                      onChange={(e) => setValidateDeleteString(e.target.value)}
+                    />
                   </div>
                   <div className="input-row-delete">
-                    <input type="password" placeholder="Current password" />
+                    <input
+                      type="password"
+                      placeholder="Current password"
+                      value={validatePassword}
+                      onChange={(e) => setValidatePassword(e.target.value)}
+                    />
                   </div>
                   <div className="input-row-delete">
                     <input

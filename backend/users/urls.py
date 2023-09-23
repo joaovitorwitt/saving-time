@@ -16,5 +16,7 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     ################################################################
     path('update/username/<int:id>', views.update_username, name='update_username'),
-    path('update/password/<int:id>', views.update_password, name='update_password')
+    path('update/password/<int:id>', views.update_password, name='update_password'),
+    ################################################################
+    path('delete/account/<int:id>', views.validating_user_information_for_deletion, name='delete_user_account')
 ]

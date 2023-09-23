@@ -217,3 +217,30 @@ def update_password(request, id):
 
     except Exception as error:
         return Response({"message": "something went wrong"})
+    
+
+# TODO: create request that validates current username, password and 'delete' string
+# if the request returns true, then return the users id
+@api_view(['POST'])
+def validating_user_information_for_deletion(request, id):
+    try:
+        user = User.objects.get(id=id)
+
+        current_username_from_request = request.data["username"]
+        current_password_from_request = request.data["password"]
+        delete_string_from_request = request.data["delete_string"]
+
+        if current_username_from_request != user.username:
+            return Response({"message": "username is wrong"})
+        if not compare_hashed_passwords(current_password_from_request, user.password):
+            return Response({"message": "invalid password"})
+        
+        if delete_string_from_request != "delete":
+            return Response({"message": "invalid confirmation string"})
+        
+        # this is a post request
+        # we should call the delete user request passing the id????
+        return Response({"message": "delete method called", "ID": "id"})
+
+    except Exception as error:
+        return Response({"message": "something went wrong", "error": str(error)})
