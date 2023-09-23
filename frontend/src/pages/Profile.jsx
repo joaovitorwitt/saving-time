@@ -109,15 +109,15 @@ export default function Profile() {
       if (data.message === "delete method called") {
         // call delete endpoint method
         setDeleteEndpointCall(true);
+        deleteUserAccountAfterValidation();
       }
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async function deleteUserAccountAfterValidation(event) {
-    event.preventDefault();
-
+  async function deleteUserAccountAfterValidation() {
+    // event.preventDefault();
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/v1/delete/user/${userId}`,
