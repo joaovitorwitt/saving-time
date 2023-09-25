@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Notes
 from .serializers import NotesSerializer
+from rest_framework import status
 
 @api_view(['GET'])
 def get_notes(request):
@@ -61,7 +62,20 @@ def get_single_note(request, id):
         return Response("Something went wrong")
     
 
-# todo send post request with users id
+@api_view(['GET'])
+def get_logged_user_notes(request, id):
+    try:
+        # "user" is the user_id field from the Notes table
+        notes = Notes.objects.filter(user=id)
+        serialized_notes = NotesSerializer(notes, many=True)
+
+        return Response({"notes": serialized_notes.data})
+        
+    except Exception as error:
+        return Response({"something went wrong": str(error)})
+
+
+
 @api_view(['POST'])
 def create_note(request):
     """
@@ -73,6 +87,7 @@ def create_note(request):
     Request Body (JSON):
     - title (str): The title of the note.
     - content (str): The content of the note.
+    - user_id (int): The user id of the note.
 
     Returns:
     - 201 Created: The newly created note in the response body.
@@ -82,24 +97,25 @@ def create_note(request):
     Example Request Body:
     {
         "title": "New Note",
-        "content": "This is a new note."
+        "content": "This is a new note.",
+        "user_id": 16
     }
 
     Example Response:
     {
-        "note successfully created": {"id": 3, "title": "New Note", "content": "This is a new note."}
+        "note successfully created": {"id": 3, "title": "New Note", "content": "This is a new note.", "user_id": 16}
     }
     """
     try:
         serializer = NotesSerializer(data=request.data)
-
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
-            return Response({"note successfully created": serializer.data})
+            return Response({"note successfully created": serializer.data}, status=status.HTTP_201_CREATED)
         else:
-            return Response({"error": serializer.error_messages})
-    except:
-        return Response("Something went wrong")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"Something went wrong": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 

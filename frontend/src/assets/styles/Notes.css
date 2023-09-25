@@ -1,0 +1,30 @@
+ul {
+  list-style-type: none !important;
+}
+
+.notes-card-title {
+  color: rgb(101, 11, 204);
+  font-weight: lighter;
+}
+
+.note-title,
+.note-content {
+  font-size: 0.9rem;
+  font-weight: lighter;
+}
+
+.note-content {
+  color: #7d7d8b;
+}
+
+.note-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.delete-note-item:hover {
+  color: #f44936;
+  cursor: pointer;
+}

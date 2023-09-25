@@ -16,6 +16,7 @@ import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Notes from "../components/Notes";
 
 export default function Progress() {
   const { currentTheme } = useTheme();
@@ -100,12 +101,7 @@ export default function Progress() {
             <Bar options={options} data={data} />
           </div>
           <div className="graphic-card-3 grid-card">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta
-              perferendis cumque quos ullam facilis nobis libero, labore,
-              blanditiis culpa maxime quia expedita? Corrupti tenetur amet
-              facere, esse sequi iure iste!
-            </p>
+            <Notes />
           </div>
           <div className="graphic-card-4 grid-card">
             <p>
