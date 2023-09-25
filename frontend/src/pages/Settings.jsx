@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../assets/styles/Settings.css";
@@ -24,6 +24,13 @@ export default function Settings() {
     setPomodoroTimer("");
     setShortBreakTimer("");
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("userInfo") === null) {
+      console.log("You are not logged in");
+      navigate("/");
+    }
+  });
 
   return (
     <>

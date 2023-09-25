@@ -61,6 +61,7 @@ def get_single_note(request, id):
         return Response("Something went wrong")
     
 
+# todo send post request with users id
 @api_view(['POST'])
 def create_note(request):
     """

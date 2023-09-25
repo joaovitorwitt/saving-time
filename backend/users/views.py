@@ -88,7 +88,7 @@ def update_user(request, id):
 
         user_for_update.save()
 
-        return Response({"message": "user updated successfully"})
+        return Response({"message": "user updated successfully", "status" :"success"})
     except Exception as error:
         return Response({"message": str(error)})
     
@@ -184,7 +184,7 @@ def update_username(request, id):
         # 3rd set username for update to the one from the database
         user.username = username_for_update
         user.save()
-        return Response({"message": "username updated successfully"})
+        return Response({"message": "username updated successfully", "status" : "success"})
 
     except Exception as error:
         return Response({"message": "something went wrong", "error": str(error)})
@@ -213,7 +213,7 @@ def update_password(request, id):
         user.password = hash_password(new_password_from_request)
         user.save()
 
-        return Response({"message": "password updated successfully"})
+        return Response({"message": "password updated successfully", "status": "success"})
 
     except Exception as error:
         return Response({"message": "something went wrong"})

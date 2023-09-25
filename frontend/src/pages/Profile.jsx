@@ -7,9 +7,25 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const { currentTheme } = useTheme();
-  const userId = JSON.parse(localStorage.getItem("userInfo"))["user_id"];
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
+  const actualUser = localStorage.getItem("userInfo");
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    if (actualUser === null) {
+      console.log("You are not logged in");
+      navigate("/login");
+    } else {
+      const parsedUser = JSON.parse(actualUser);
+      if (parsedUser && parsedUser.user_id) {
+        setUserId(parsedUser.user_id);
+        // Now you can use userId
+      } else {
+        console.log("User information is incomplete.");
+      }
+    }
+  }, [actualUser]);
 
   // Changing password feature
   const [currentPassword, setCurrentPassword] = useState("");
@@ -31,7 +47,10 @@ export default function Profile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Response return value
-  const [responseString, setResponseString] = useState("");
+  const [responseStringFromUsername, setResponseStringFromUsername] =
+    useState("");
+  const [responseStringFromPassword, setResponseStringFromPassword] =
+    useState("");
 
   async function handleUsernameChange(event) {
     event.preventDefault();
@@ -53,6 +72,14 @@ export default function Profile() {
 
       const data = await response.json();
       console.log(data);
+
+      if (data.status === "success") {
+        navigate("/");
+      } else {
+        setNewUsername("");
+        setConfirmPasswordForUsername("");
+        setResponseStringFromUsername(data.message);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -78,8 +105,15 @@ export default function Profile() {
       );
 
       const data = await response.json();
-
       console.log(data);
+      if (data.status === "success") {
+        navigate("/");
+      } else {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setResponseStringFromPassword(data.message);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -149,6 +183,16 @@ export default function Profile() {
     }
   }
 
+  useEffect(() => {
+    if (responseStringFromPassword || responseStringFromUsername) {
+      const timer = setTimeout(() => {
+        setResponseStringFromPassword("");
+        setResponseStringFromUsername("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [responseStringFromPassword, responseStringFromUsername]);
+
   return (
     <>
       <Navbar />
@@ -187,6 +231,9 @@ export default function Profile() {
               className="submit-input"
             />
           </div>
+          <div className="error-message">
+            <p>{responseStringFromPassword}</p>
+          </div>
         </form>
 
         {/* //////////////////////////////////////////////////////////////// */}
@@ -217,6 +264,9 @@ export default function Profile() {
               value={"Change username"}
               className="submit-input"
             />
+          </div>
+          <div className="error-message">
+            <p>{responseStringFromUsername}</p>
           </div>
         </form>
 
