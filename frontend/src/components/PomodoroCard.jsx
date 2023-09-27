@@ -27,6 +27,10 @@ export default function PomodoroCard({
   // set greeting state for current session
   const [greeting, setGreeting] = useState("");
 
+  // feature for updating total focus time
+  let timePaused;
+  let initialFocus = pomodoroTimer * 60;
+
   useEffect(() => {
     if (seconds <= 0 && currentSession === "Pomodoro") {
       console.log("CURRENT TIMER ENDED");
@@ -90,6 +94,8 @@ export default function PomodoroCard({
     setIsPomodoroRunning(false);
     // playPauseSound();
     console.log("TIMER PAUSED");
+    timePaused = seconds;
+    calculateCurrentFocusTime(initialFocus, timePaused);
   }
 
   function resetTimer() {
@@ -151,6 +157,31 @@ export default function PomodoroCard({
     } catch (error) {
       console.error("Failed to get user information: ", error);
     }
+  }
+
+  async function updateTotalFocusTime(userId, event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/update/total_focus/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }
+      );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  function calculateCurrentFocusTime(intialFocus, timePaused) {
+    // THIS IS WHAT I WILL SEND TO THE REQUEST
+    console.log(`TOTAL FOCUS TIME: ${intialFocus - timePaused}`);
+    return intialFocus - timePaused;
   }
 
   useEffect(() => {

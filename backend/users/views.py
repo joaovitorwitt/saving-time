@@ -10,6 +10,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, login
 from django.core.exceptions import ObjectDoesNotExist
 
+from graphics.models import TotalLifeTimeFocus
+from graphics.serializers import TotalLifeTimeFocusSerializer
+
 # Create your views here.
 @api_view(['GET'])
 def list_users(request):
@@ -44,6 +47,26 @@ def create_user(request):
     except Exception as e:
         return Response({"message": str(e)})
     
+
+@api_view(['POST'])
+def create_focus_instance(request):
+    try:
+        # TODO: create condition that checks if user focus instance is already created
+        id_from_request = request.data["user"]
+        if TotalLifeTimeFocus.objects.filter(user=id_from_request):
+            return Response({"message": "user focus instance already exists"})
+
+        user_serializer = TotalLifeTimeFocusSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+
+            return Response({"message": "user focus instance created", "data": user_serializer.data})
+        else:
+            return Response({"message": "something went wrong", "data": user_serializer.errors})
+
+    except Exception as error:
+        return Response({"message": str(error)})
+
 
 @api_view(['POST'])
 def generate_token_for_user(request):

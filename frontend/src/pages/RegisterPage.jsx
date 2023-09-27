@@ -4,8 +4,10 @@ import "../assets/styles/RegisterPage.css";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
   const { currentTheme, toggleTheme } = useTheme();
 
   const [username, setUsername] = useState("");
@@ -58,6 +60,7 @@ export default function RegisterPage() {
         // registrations was successful
         // redirect user to homepage
         console.log("Successfully registered: ", data);
+        navigate("/");
       } else {
         console.log(data);
         console.log("Failed to register: ", data);

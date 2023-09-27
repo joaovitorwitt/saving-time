@@ -1,3 +1,21 @@
+:root {
+  --settings-background-color: #2c2c39;
+  --settings-text-color: #f5f5fd;
+}
+
+[data-theme="light"] {
+  --settings-background-color: #fdfdfd;
+  --settings-text-color: #23232e;
+}
+
+.settings-page {
+  background-color: var(--settings-background-color);
+  color: var(--settings-text-color);
+  height: 100vh;
+  margin-left: 5rem;
+  padding: 1rem;
+}
+
 .settings-form-data > h1 {
   font-size: 2rem;
 }
@@ -20,7 +38,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .main {
+  .settings-page {
     margin: 0;
   }
 }

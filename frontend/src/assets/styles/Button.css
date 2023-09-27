@@ -1,6 +1,6 @@
 :root {
   --btn-background-color: #f5f5fd;
-  --btn-color: #23233e;
+  --btn-color: #f5f5fd;
   --btn-background-color-hover: #d5d5d8;
   --btn-color-hover: #0c0c13;
 }
@@ -16,7 +16,7 @@
   padding: 0.5rem 1rem;
   border-radius: 10px;
   border: none;
-  background-color: var(--btn-background-color);
+  background-color: rgb(101, 11, 204);
   color: var(--btn-color);
   cursor: pointer;
 }

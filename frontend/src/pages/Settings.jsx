@@ -5,11 +5,31 @@ import "../assets/styles/Settings.css";
 import Button from "../components/Button";
 import "../assets/styles/Settings.css";
 
+import { useTheme } from "../main";
+
+// Material UI library
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+
+// Color configuration Material UI library
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material";
+
 export default function Settings() {
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
 
   const [pomodoroTimer, setPomodoroTimer] = useState("");
   const [shortBreakTimer, setShortBreakTimer] = useState("");
+
+  // Material UI theme
+  const muiTheme = createTheme({
+    palette: {
+      primary: {
+        main: "rgb(101, 11, 204)", // Color for thumb
+      },
+    },
+  });
 
   function handleSubmitOfPomodoroSession(e) {
     e.preventDefault();
@@ -35,7 +55,7 @@ export default function Settings() {
   return (
     <>
       <Navbar />
-      <div className="main">
+      <div className="settings-page" data-theme={currentTheme}>
         <div className="settings-form-wrapper">
           <div className="settings-form-data">
             <h1>Settings</h1>
@@ -50,28 +70,32 @@ export default function Settings() {
           >
             <div className="form-group">
               <label htmlFor="pomodoro">Pomodoro</label>
-              <input
-                type="number"
-                className="form-control"
-                id="pomodoro"
-                placeholder="Pomodoro"
-                value={pomodoroTimer}
-                onChange={(e) => setPomodoroTimer(e.target.value)}
-              />
+              <ThemeProvider theme={muiTheme}>
+                <Slider
+                  defaultValue={25}
+                  aria-label="Default"
+                  valueLabelDisplay="auto"
+                  onChange={(e) => setPomodoroTimer(e.target.value)}
+                  min={10}
+                  max={90}
+                />
+              </ThemeProvider>
             </div>
             <div className="form-group" style={{ marginBottom: "1rem" }}>
               <label htmlFor="shortBreak">Short Break</label>
-              <input
-                type="number"
-                className="form-control"
-                id="shortBreak"
-                placeholder="Short Break"
-                value={shortBreakTimer}
-                onChange={(e) => setShortBreakTimer(e.target.value)}
-              />
+              <ThemeProvider theme={muiTheme}>
+                <Slider
+                  defaultValue={5}
+                  aria-label="Default"
+                  valueLabelDisplay="auto"
+                  onChange={(e) => setShortBreakTimer(e.target.value)}
+                  min={5}
+                  max={40}
+                />
+              </ThemeProvider>
             </div>
 
-            <Button textContent={"Submit"} className={"btn"} />
+            <Button textContent={"Set"} className={"btn"} />
           </form>
         </div>
       </div>

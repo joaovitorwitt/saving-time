@@ -1,3 +1,11 @@
+:root {
+  --add-note-background-color: #2c2c38;
+}
+
+[data-theme="light"] {
+  --add-note-background-color: #fdfdfd;
+}
+
 ul {
   list-style-type: none !important;
 }
@@ -27,4 +35,32 @@ ul {
 .delete-note-item:hover {
   color: #f44936;
   cursor: pointer;
+}
+
+.create-note-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-note-input {
+  border-radius: 15px;
+  border: none;
+  background-color: var(--add-note-background-color);
+  padding: 0.3rem;
+}
+
+.add-note-input:focus {
+  outline: 1px solid rgb(101, 11, 204);
+}
+
+.add-note-icon {
+  background-color: var(--add-note-background-color);
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+
+.add-note-icon:hover {
+  background-color: rgb(101, 11, 204);
 }
