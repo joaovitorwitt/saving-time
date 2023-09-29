@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 
 export default function HomePage() {
+  console.log("HOMEPAGE RENDERED");
   const location = useLocation();
   const pomodoroSessionData = location.state?.pomodoroSessionData || {};
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -25,7 +26,6 @@ export default function HomePage() {
       );
 
       const data = await response.json();
-
       console.log(data);
     } catch (error) {
       throw new Error(error);

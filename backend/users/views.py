@@ -51,7 +51,7 @@ def create_user(request):
 @api_view(['POST'])
 def create_focus_instance(request):
     try:
-        # TODO: create condition that checks if user focus instance is already created
+        # TODO: modify request to use the user report model instead
         id_from_request = request.data["user"]
         if TotalLifeTimeFocus.objects.filter(user=id_from_request):
             return Response({"message": "user focus instance already exists"})

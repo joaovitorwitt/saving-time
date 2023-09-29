@@ -6,12 +6,13 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 // FAKER DATA
 import { faker } from "@faker-js/faker";
 import { useState, useEffect } from "react";
@@ -19,15 +20,18 @@ import { useNavigate } from "react-router-dom";
 import Notes from "../components/Notes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
+import WeeklyReport from "../components/WeeklyReport";
 
 export default function Progress() {
+  console.log("PROGRESS COMPONENT RENDERED");
   const { currentTheme } = useTheme();
   const navigate = useNavigate();
 
   ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
@@ -41,7 +45,7 @@ export default function Progress() {
       },
       title: {
         display: true,
-        text: "Weekly Report",
+        text: "Mock Data",
       },
     },
   };
@@ -52,7 +56,7 @@ export default function Progress() {
     labels,
     datasets: [
       {
-        label: "Focus Time",
+        label: "Dataset 1",
         // get the day of the week that the user had the longest focus time and make it the max
         // alternatively get the day of the week that the user had the smallest focus time and make ut the min
         data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
@@ -107,7 +111,7 @@ export default function Progress() {
       console.log("You are not logged in");
       navigate("/login");
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <>
@@ -118,10 +122,13 @@ export default function Progress() {
             <h2>Hello, {username}</h2>
           </div>
           <div className="graphic-card-2 grid-card">
-            <Bar options={options} data={data} />
+            <Line options={options} data={data} />
           </div>
 
-          <div className="graphic-card-3 grid-card">{/* <Notes /> */}</div>
+          <div className="graphic-card-3 grid-card">
+            {/* <Notes /> */}
+            <WeeklyReport />
+          </div>
 
           <div className="graphic-card-4 grid-card">
             <div className="grid-4-data-container">

@@ -14,10 +14,13 @@
   height: 100vh;
   margin-left: 5rem;
   padding: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-.settings-form-data > h1 {
-  font-size: 2rem;
+.settings-form-wrapper {
+  width: 600px;
+  margin-top: 3rem;
 }
 
 .settings-form-data > p {

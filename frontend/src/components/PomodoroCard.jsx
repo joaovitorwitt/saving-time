@@ -29,7 +29,7 @@ export default function PomodoroCard({
 
   // feature for updating total focus time
   let timePaused;
-  let initialFocus = pomodoroTimer * 60;
+  const [initialFocus, setInitialFocus] = useState(pomodoroTimer * 60);
 
   useEffect(() => {
     if (seconds <= 0 && currentSession === "Pomodoro") {
@@ -159,6 +159,7 @@ export default function PomodoroCard({
     }
   }
 
+  // TODO: finish this request
   async function updateTotalFocusTime(userId, event) {
     event.preventDefault();
 
@@ -178,10 +179,17 @@ export default function PomodoroCard({
     }
   }
 
-  function calculateCurrentFocusTime(intialFocus, timePaused) {
-    // THIS IS WHAT I WILL SEND TO THE REQUEST
-    console.log(`TOTAL FOCUS TIME: ${intialFocus - timePaused}`);
-    return intialFocus - timePaused;
+  function calculateCurrentFocusTime(initialFocus, timePaused) {
+    // store inital focus & time paused
+    let holdInitialFocus = initialFocus;
+    let holdTimePaused = timePaused;
+
+    // perform calculation
+    let valueToApi = holdInitialFocus - holdTimePaused;
+
+    console.log(`INITIAL FOCUS IS: ${holdInitialFocus}`);
+    console.log(`TIME PAUSED: ${holdTimePaused}`);
+    console.log(`TOTAL FOCUS TIME: ${valueToApi}`);
   }
 
   useEffect(() => {
@@ -195,9 +203,9 @@ export default function PomodoroCard({
 
   return (
     <section className="pomodoro-card" data-theme={currentTheme}>
+      <h1 className="user-greet-message">{greeting}</h1>
       <div className="container">
         <p>Session: {currentSession}</p>
-        <p>{greeting}</p>
         <div className="card-data">
           <h1 className="timer">{formatTime(seconds)}</h1>
           <div className="buttons-wrapper">

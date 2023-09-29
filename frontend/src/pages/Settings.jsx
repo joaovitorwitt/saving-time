@@ -58,10 +58,7 @@ export default function Settings() {
       <div className="settings-page" data-theme={currentTheme}>
         <div className="settings-form-wrapper">
           <div className="settings-form-data">
-            <h1>Settings</h1>
-            <p>
-              here you can adjust your pomodoro session according to your needs
-            </p>
+            <p>Adjust your pomodoro session according to your needs</p>
           </div>
 
           <form
