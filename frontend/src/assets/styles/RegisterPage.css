@@ -24,6 +24,11 @@
   position: relative;
 }
 
+.register-form > h1 {
+  font-size: 1.5rem;
+  color: var(--register-text-color);
+}
+
 .show-password-icon {
   position: absolute;
   right: 15px;
@@ -38,4 +43,19 @@
   bottom: 110px;
   color: var(--show-password-icon-color);
   cursor: pointer;
+}
+
+.login-page-cta {
+  color: var(--register-text-color);
+  font-weight: lighter;
+}
+
+.login-page-link {
+  text-decoration: none;
+  color: rgb(101, 11, 204);
+  font-weight: lighter;
+}
+
+.login-page-link:hover {
+  color: rgb(108, 43, 182);
 }

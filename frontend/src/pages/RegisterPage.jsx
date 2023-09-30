@@ -4,11 +4,13 @@ import "../assets/styles/RegisterPage.css";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 export default function RegisterPage() {
+  console.log("REGISTER PAGE RENDERED");
   const navigate = useNavigate();
-  const { currentTheme, toggleTheme } = useTheme();
+  const { currentTheme } = useTheme();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +21,18 @@ export default function RegisterPage() {
   const [passwordVisibility, setPasswordVisibility] = useState("password");
   const passwordVisibilityIcon =
     passwordVisibility === "password" ? faEye : faEyeSlash;
+
+  // auth tokens & user info feature
+  const [authTokens, setAuthTokens] = useState(() =>
+    localStorage.getItem("authTokens")
+      ? JSON.parse(localStorage.getItem("authTokens"))
+      : null
+  );
+  const [userInfo, setUserInfo] = useState(() =>
+    localStorage.getItem("authTokens")
+      ? jwtDecode(localStorage.getItem("authTokens"))
+      : null
+  );
 
   function togglePasswordVisibility() {
     setPasswordVisibility((prevVisibility) =>
@@ -57,8 +71,15 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (data.status === "success") {
-        // registrations was successful
-        // redirect user to homepage
+        setAuthTokens(jwtDecode(data.access));
+        console.log(data);
+        console.log(jwtDecode(data.access));
+        setUserInfo(jwtDecode(data.access));
+        localStorage.setItem("authTokens", JSON.stringify(data));
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify(jwtDecode(data.access))
+        );
         console.log("Successfully registered: ", data);
         navigate("/");
       } else {
@@ -88,6 +109,13 @@ export default function RegisterPage() {
       <Navbar />
       <div className="register-page" data-theme={currentTheme}>
         <form onSubmit={handleRegistration} className="register-form">
+          <h1>Register</h1>
+          <h3 className="login-page-cta">
+            Already have an account?{" "}
+            <Link className="login-page-link" to={"/login"}>
+              Log in
+            </Link>
+          </h3>
           <div className="form-row">
             <input
               type="text"

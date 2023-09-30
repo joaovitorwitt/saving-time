@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, login
 from django.core.exceptions import ObjectDoesNotExist
 
-from graphics.models import TotalLifeTimeFocus
-from graphics.serializers import TotalLifeTimeFocusSerializer
+from graphics.models import TotalLifeTimeFocus, UserProgressReport
+from graphics.serializers import TotalLifeTimeFocusSerializer, UserProgressReportSerializer
 
 # Create your views here.
 @api_view(['GET'])
@@ -156,6 +156,18 @@ def login_user(request):
     
 
 
+@api_view(['POST'])
+def generate_focus_instance_v2(request):
+    try:
+        instance_serializer = UserProgressReportSerializer(data=request.data)
+        if instance_serializer.is_valid():
+            instance_serializer.save()
+            return Response({"message": "user instance created", "data": instance_serializer.data})
+        else:
+            return Response({"message": "something went wrong"})
+    except Exception as error:
+        return Response({"message": str(error)})
+
 
 @api_view(['POST'])
 def register_user(request):
@@ -177,12 +189,14 @@ def register_user(request):
         if serializer.is_valid():
             hashed_password = hash_password(serializer.validated_data["password"])
             serializer.validated_data["password"] = hashed_password
+            # login(request, serializer)
             serializer.save()
-            return Response({"message": "user successfully registered", "status": "success"})
+            user = User.objects.get(username=request.data["username"])
+            refresh = RefreshToken.for_user(user)
+            login(request, user)
+            return Response({"message": "user successfully registered", "status": "success", "refresh": str(refresh), "access": str(refresh.access_token)})
         else:
             return Response({"message": "username already taken"})
-
-
     except Exception as error:
         return Response({"message": str(error)})
 

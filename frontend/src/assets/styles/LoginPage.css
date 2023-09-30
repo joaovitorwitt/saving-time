@@ -25,6 +25,11 @@
   margin: 0 2%;
 }
 
+.login-form > h1 {
+  font-size: 1.5rem;
+  color: var(--login-text-color);
+}
+
 .form-row input {
   padding: 0.7rem;
   border-radius: 15px;

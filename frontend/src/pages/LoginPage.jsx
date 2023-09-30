@@ -8,9 +8,10 @@ import { useNavigate, Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 export default function LoginPage() {
+  console.log("LOGIN PAGE RENDERED");
   const navigate = useNavigate();
 
-  const { currentTheme, toggleTheme } = useTheme();
+  const { currentTheme } = useTheme();
   const [passwordVisibility, setPasswordVisibility] = useState("password");
 
   const passwordVisibilityIcon =
@@ -92,6 +93,7 @@ export default function LoginPage() {
       <Navbar />
       <div className="login-page" data-theme={currentTheme}>
         <form onSubmit={handleLogin} className="login-form">
+          <h1>Login</h1>
           <h3 className="register-page-cta">
             First time here?{" "}
             <Link className="register-page-link" to={"/register"}>
