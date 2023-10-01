@@ -38,15 +38,21 @@ export default function HomePage() {
     let month = String(date.getMonth() + 1).padStart(2, "0");
     let day = String(date.getDate()).padStart(2, "0");
 
-    return `${year}-${month}-${day}	`;
+    return `${year}-${month}-${day}`;
   }
 
   function getCurrentWeekNumber() {
-    return "week";
+    let currentDate = new Date();
+    let startDate = new Date(currentDate.getFullYear(), 0, 1);
+    let days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+    let weekNumber = Math.ceil(days / 7);
+
+    return weekNumber;
   }
 
   let currentDayOfTheWeek = getCurrentDayOfTheWeek();
   let currentDate = getCurrentDateFormatted();
+  let currentWeekNumber = getCurrentWeekNumber();
 
   async function handleFocusInstanceCreation() {
     try {
@@ -60,8 +66,9 @@ export default function HomePage() {
           body: JSON.stringify({
             user: currentUser.user_id,
             focus_time: 0.0,
-            day_of_week: currentDayOfTheWeek,
+            day_of_the_week: currentDayOfTheWeek,
             date: currentDate,
+            week_number: currentWeekNumber,
           }),
         }
       );
@@ -76,6 +83,7 @@ export default function HomePage() {
   useEffect(() => {
     if (currentUser && currentUser.user_id) {
       handleFocusInstanceCreation();
+      console.log("Focus Instance creation called");
     } else {
       console.log("not logged");
     }

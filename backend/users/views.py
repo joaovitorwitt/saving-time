@@ -159,12 +159,16 @@ def login_user(request):
 @api_view(['POST'])
 def generate_focus_instance_v2(request):
     try:
+        user_id_from_request = request.data['user']
+        if UserProgressReport.objects.filter(user=user_id_from_request):
+            return Response({"message": "user instance already exists"})
+
         instance_serializer = UserProgressReportSerializer(data=request.data)
         if instance_serializer.is_valid():
             instance_serializer.save()
             return Response({"message": "user instance created", "data": instance_serializer.data})
         else:
-            return Response({"message": "something went wrong"})
+            return Response({"message": "something went wrong", "data": instance_serializer.errors})
     except Exception as error:
         return Response({"message": str(error)})
 

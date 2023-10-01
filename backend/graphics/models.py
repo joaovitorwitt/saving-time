@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import date
 
 # Create your models here.
 class WeeklyFocusTime(models.Model):
@@ -44,7 +44,13 @@ class UserProgressReport(models.Model):
 
     # user_id as in 2
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField()
     day_of_the_week = models.CharField(max_length=9)
     week_number = models.IntegerField()
     focus_time = models.FloatField(default=0.0)
+
+    def save(self, *args, **kwargs):
+        # Ensure that the 'date' field is a date object (without time information)
+        if not isinstance(self.date, date):
+            self.date = self.date.date()
+        super(UserProgressReport, self).save(*args, **kwargs)
