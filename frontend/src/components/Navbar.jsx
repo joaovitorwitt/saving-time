@@ -25,6 +25,7 @@ export default function Navbar() {
 
   function logoutUser() {
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("pomodoroSessionData");
   }
 
   return (

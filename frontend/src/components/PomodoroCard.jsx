@@ -7,11 +7,23 @@ import Button from "./Button";
 import "../assets/styles/PomodoroCard.css";
 import { useTheme } from "../main";
 
-export default function PomodoroCard({
-  pomodoroTimer = 25,
-  shortBreakTimer = 5,
-}) {
-  const { currentTheme, toggleTheme } = useTheme();
+export default function PomodoroCard() {
+  const { currentTheme } = useTheme();
+
+  const pomodoroTimer = useState(
+    JSON.parse(localStorage.getItem("pomodoroSessionData"))
+      ? JSON.parse(localStorage.getItem("pomodoroSessionData")).pomodoroTimer
+      : 25
+  );
+
+  // const pomodoroTimer = 25
+
+  const shortBreakTimer = useState(
+    JSON.parse(localStorage.getItem("pomodoroSessionData"))
+      ? JSON.parse(localStorage.getItem("pomodoroSessionData")).shortBreakTimer
+      : 5
+  );
+  // const shortBreakTimer = 5;
 
   const [buttonText, setButtonText] = useState("Start");
   const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
@@ -196,6 +208,15 @@ export default function PomodoroCard({
     if (currentUser === null) {
       console.log("CURRENT USER IS NULL");
       setUsername("Stranger");
+      const pomodoroSessionData = {
+        pomodoroTimer: 25,
+        shortBreakTimer: 5,
+      };
+
+      localStorage.setItem(
+        "pomodoroSessionData",
+        JSON.stringify(pomodoroSessionData)
+      );
     } else {
       getUserInformationFromDatabase(currentUserID.user_id);
     }

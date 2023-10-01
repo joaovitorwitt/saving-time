@@ -61,6 +61,16 @@ export default function LoginPage() {
           "userInfo",
           JSON.stringify(jwtDecode(data.access))
         );
+
+        const pomodoroSessionData = {
+          pomodoroTimer: 25,
+          shortBreakTimer: 5,
+        };
+
+        localStorage.setItem(
+          "pomodoroSessionData",
+          JSON.stringify(pomodoroSessionData)
+        );
         navigate("/");
       } else {
         console.log(data);

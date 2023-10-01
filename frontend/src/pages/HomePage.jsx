@@ -6,12 +6,10 @@ import { useEffect, useState } from "react";
 export default function HomePage() {
   console.log("HOMEPAGE RENDERED");
   const location = useLocation();
-  const pomodoroSessionData = location.state?.pomodoroSessionData || {};
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
 
   function getCurrentDayOfTheWeek() {
     let date = new Date().getDay();
-    // date will return a number between 0 and 6 for each day of the week
     switch (date) {
       case 0:
         return "Sunday";
@@ -83,6 +81,7 @@ export default function HomePage() {
   useEffect(() => {
     if (currentUser && currentUser.user_id) {
       handleFocusInstanceCreation();
+      localStorage.getItem("pomodoroSessionData");
       console.log("Focus Instance creation called");
     } else {
       console.log("not logged");
@@ -92,7 +91,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <PomodoroCard {...pomodoroSessionData} />
+      <PomodoroCard />
     </>
   );
 }

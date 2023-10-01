@@ -19,8 +19,8 @@ export default function Settings() {
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
 
-  const [pomodoroTimer, setPomodoroTimer] = useState("");
-  const [shortBreakTimer, setShortBreakTimer] = useState("");
+  const [pomodoroTimer, setPomodoroTimer] = useState(25);
+  const [shortBreakTimer, setShortBreakTimer] = useState(5);
 
   // Material UI theme
   const muiTheme = createTheme({
@@ -37,6 +37,11 @@ export default function Settings() {
       pomodoroTimer,
       shortBreakTimer,
     };
+
+    localStorage.setItem(
+      "pomodoroSessionData",
+      JSON.stringify(pomodoroSessionData)
+    );
 
     navigate("/", { state: { pomodoroSessionData } });
 
