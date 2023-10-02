@@ -9,16 +9,23 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from datetime import datetime
 
+from .utils import get_current_week_of_the_year
+
 
 @api_view(['GET'])
 def get_weekly_report(request, id):
     try:
-        # TODO: return only the weekdays and the focus time for each day
-        user_weekly_focus = WeeklyFocusTime.objects.filter(user=id)
-        user_weekly_focus_serializer = WeeklyFocusTimeSerializer(user_weekly_focus, many=True)
+        current_week = get_current_week_of_the_year()
+        user_weekly_focus = UserProgressReport.objects.filter(user=id, week_number=current_week)
+        user_weekly_focus_serializer = UserProgressReportSerializer(user_weekly_focus, many=True)
         return Response({"message": "here is your weekly report", "data": user_weekly_focus_serializer.data})
     except Exception as error:
         return Response({"message": str(error)})
+    
+
+# @api_view(['GET'])
+# def get_daily_report(request,id):
+#     current_day 
     
 
 @api_view(['GET'])

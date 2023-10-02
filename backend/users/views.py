@@ -13,6 +13,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from graphics.models import TotalLifeTimeFocus, UserProgressReport
 from graphics.serializers import TotalLifeTimeFocusSerializer, UserProgressReportSerializer
 
+from datetime import datetime
+
 # Create your views here.
 @api_view(['GET'])
 def list_users(request):
@@ -160,7 +162,9 @@ def login_user(request):
 def generate_focus_instance_v2(request):
     try:
         user_id_from_request = request.data['user']
-        if UserProgressReport.objects.filter(user=user_id_from_request):
+        today = datetime.today().strftime("%Y-%m-%d")
+
+        if UserProgressReport.objects.filter(user=user_id_from_request, date=today).exists():
             return Response({"message": "user instance already exists"})
 
         instance_serializer = UserProgressReportSerializer(data=request.data)

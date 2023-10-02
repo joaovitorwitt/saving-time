@@ -1,11 +1,9 @@
-import { useLocation } from "react-router-dom";
 import PomodoroCard from "../components/PomodoroCard";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
   console.log("HOMEPAGE RENDERED");
-  const location = useLocation();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
 
   function getCurrentDayOfTheWeek() {
@@ -52,11 +50,20 @@ export default function HomePage() {
   let currentDate = getCurrentDateFormatted();
   let currentWeekNumber = getCurrentWeekNumber();
 
-  async function handleFocusInstanceCreation() {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/v1/create/focus_instance`,
-        {
+  const [hasFetchedData, setHasFetchedData] = useState(false);
+
+  useEffect(() => {
+    if (currentUser && currentUser.user_id) {
+      localStorage.getItem("pomodoroSessionData");
+    } else {
+      console.log("not logged");
+    }
+  }, [currentUser]); // useEffect will be triggered once the currentUser changes
+
+  useEffect(() => {
+    if (currentUser && currentUser.user_id && !hasFetchedData) {
+      try {
+        fetch(`http://127.0.0.1:8000/api/v1/create/focus_instance`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,25 +75,18 @@ export default function HomePage() {
             date: currentDate,
             week_number: currentWeekNumber,
           }),
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      throw new Error(error);
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Set the state inside a functional update to ensure it's based on the previous state
+            setHasFetchedData(true);
+            console.log(data);
+          });
+      } catch (error) {
+        throw new Error(error);
+      }
     }
-  }
-
-  useEffect(() => {
-    if (currentUser && currentUser.user_id) {
-      handleFocusInstanceCreation();
-      localStorage.getItem("pomodoroSessionData");
-      console.log("Focus Instance creation called");
-    } else {
-      console.log("not logged");
-    }
-  });
+  }, [hasFetchedData]);
 
   return (
     <>

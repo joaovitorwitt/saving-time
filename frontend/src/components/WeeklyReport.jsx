@@ -21,25 +21,28 @@ export default function WeeklyReport() {
     Legend
   );
 
-  //   console.log("WEEKLY COMPONENT RENDERED");
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const [responseData, setResponseData] = useState([]);
+  const [hasFetchedData, setHasFetchedData] = useState(false);
 
   useEffect(() => {
-    if (currentUser && currentUser.user_id) {
+    if (currentUser && currentUser.user_id && !hasFetchedData) {
       fetch(
         `http://127.0.0.1:8000/api/v1/get/weekly/report/${currentUser.user_id}`
       )
         .then((response) => response.json())
         .then((data) => {
-          //   setResponseData(data.data);
-          //   console.log(responseData);
+          if (data && data.data) {
+            setResponseData(data.data);
+            setHasFetchedData(true);
+            console.log(responseData);
+          }
         })
         .catch((error) => {
           console.log("Error fetching data: ", error);
         });
     }
-  }, [currentUser]);
+  }, [currentUser, hasFetchedData]);
 
   const options = {
     responsive: true,
@@ -55,11 +58,11 @@ export default function WeeklyReport() {
   };
 
   const data = {
-    labels: responseData.map((data) => data.day_of_week),
+    labels: responseData.map((data) => data.day_of_the_week),
     datasets: [
       {
         label: "Hours",
-        data: responseData.map((data) => data.total_focus_time_hours),
+        data: responseData.map((data) => data.focus_time),
         backgroundColor: "rgb(101, 11, 204)",
       },
     ],

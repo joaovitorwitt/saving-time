@@ -16,17 +16,14 @@ export default function PomodoroCard() {
       : 25
   );
 
-  // const pomodoroTimer = 25
-
   const shortBreakTimer = useState(
     JSON.parse(localStorage.getItem("pomodoroSessionData"))
       ? JSON.parse(localStorage.getItem("pomodoroSessionData")).shortBreakTimer
       : 5
   );
-  // const shortBreakTimer = 5;
 
   const [buttonText, setButtonText] = useState("Start");
-  const [seconds, setSeconds] = useState(parseInt(pomodoroTimer) * 60);
+  const [seconds, setSeconds] = useState(parseInt(pomodoroTimer[0]) * 60);
   const [timerInterval, setTimerInterval] = useState(null);
   const [isPomodoroRunning, setIsPomodoroRunning] = useState(false);
 
@@ -41,7 +38,7 @@ export default function PomodoroCard() {
 
   // feature for updating total focus time
   let timePaused;
-  const [initialFocus, setInitialFocus] = useState(pomodoroTimer * 60);
+  const [initialFocus, setInitialFocus] = useState(pomodoroTimer[0] * 60);
 
   useEffect(() => {
     if (seconds <= 0 && currentSession === "Pomodoro") {
@@ -104,10 +101,10 @@ export default function PomodoroCard() {
   function pauseTimer() {
     clearInterval(timerInterval);
     setIsPomodoroRunning(false);
-    // playPauseSound();
     console.log("TIMER PAUSED");
     timePaused = seconds;
     calculateCurrentFocusTime(initialFocus, timePaused);
+    // SEND UPDATE TOTAL FOCUS REQUEST HERE???
   }
 
   function resetTimer() {
@@ -172,7 +169,7 @@ export default function PomodoroCard() {
   }
 
   // TODO: finish this request
-  async function updateTotalFocusTime(userId, event) {
+  async function updateTotalFocusTime(userId, event, totalFocus) {
     event.preventDefault();
 
     try {
@@ -183,9 +180,14 @@ export default function PomodoroCard() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({}),
+          body: JSON.stringify({
+            focus_time: parseFloat(totalFocus),
+          }),
         }
       );
+
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
       throw new Error(error);
     }
