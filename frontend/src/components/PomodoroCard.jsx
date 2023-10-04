@@ -102,16 +102,19 @@ export default function PomodoroCard() {
     clearInterval(timerInterval);
     setIsPomodoroRunning(false);
     console.log("TIMER PAUSED");
+    setInitialFocus(seconds);
     timePaused = seconds;
-    calculateCurrentFocusTime(initialFocus, timePaused);
+    let totalFocus = calculateCurrentFocusTime(initialFocus, timePaused);
+    console.log(totalFocus);
     // SEND UPDATE TOTAL FOCUS REQUEST HERE???
+    updateTotalFocusTime(totalFocus);
   }
 
   function resetTimer() {
     clearInterval(timerInterval);
     setButtonText("Start");
     setIsPomodoroRunning(false);
-
+    setInitialFocus(pomodoroTimer[0] * 60);
     if (currentSession === "Pomodoro") {
       setSeconds(parseInt(pomodoroTimer) * 60);
     } else {
@@ -169,12 +172,10 @@ export default function PomodoroCard() {
   }
 
   // TODO: finish this request
-  async function updateTotalFocusTime(userId, event, totalFocus) {
-    event.preventDefault();
-
+  async function updateTotalFocusTime(totalFocus) {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/v1/update/total_focus/${userId}`,
+        `http://127.0.0.1:8000/api/v1/update/total_focus/${currentUserID.user_id}`,
         {
           method: "PUT",
           headers: {
@@ -204,6 +205,9 @@ export default function PomodoroCard() {
     console.log(`INITIAL FOCUS IS: ${holdInitialFocus}`);
     console.log(`TIME PAUSED: ${holdTimePaused}`);
     console.log(`TOTAL FOCUS TIME: ${valueToApi}`);
+    // convert to hours before sending to the database
+    // this is in minutes right now
+    return (valueToApi / 60).toFixed(2);
   }
 
   useEffect(() => {

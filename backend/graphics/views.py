@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from datetime import datetime
 
-from .utils import get_current_week_of_the_year
+from .utils import get_current_week_of_the_year, get_todays_date
 
 
 @api_view(['GET'])
@@ -23,9 +23,15 @@ def get_weekly_report(request, id):
         return Response({"message": str(error)})
     
 
-# @api_view(['GET'])
-# def get_daily_report(request,id):
-#     current_day 
+@api_view(['GET'])
+def get_users_daily_report(request, id):
+    try:
+        today = get_todays_date()
+        user_daily_focus = UserProgressReport.objects.filter(user=id, date=today).first()
+        user_daily_focus_serializer = UserProgressReportSerializer(user_daily_focus)
+        return Response({"message": "here is your daily report", "data": user_daily_focus_serializer.data['focus_time']})
+    except Exception as error:
+        return Response({"message": str(error)}) 
     
 
 @api_view(['GET'])
@@ -42,10 +48,10 @@ def get_user_total_focus_time(request, id):
 @api_view(['PUT'])
 def update_total_focus_time(request, id):
     try:
-        user_focus_for_update = UserProgressReport.objects.filter(user=id).first()
+        today = get_todays_date()
+        user_focus_for_update = UserProgressReport.objects.filter(user=id, date=today).first()
 
-        # Update the user's focus time
-        if datetime.today().strftime('%Y-%m-%d') == str(user_focus_for_update.date):
+        if today == str(user_focus_for_update.date):
             user_focus_for_update.focus_time += request.data["focus_time"]
             user_focus_for_update.save()
             return Response({"message": "User's focus time updated"})

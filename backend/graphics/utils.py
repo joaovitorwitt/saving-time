@@ -33,8 +33,23 @@ def get_current_week_of_the_year():
     
 
 def get_todays_date():
+    """
+    Get the current date in the 'YYYY-MM-DD' format.
+
+    This function retrieves the current date and formats it as a string in the 'YYYY-MM-DD' format.
+    
+    Returns:
+        str: A string representing the current date in 'YYYY-MM-DD' format.
+
+    Raises:
+        Exception: If an error occurs during the date retrieval or formatting, an Exception is raised.
+    
+    Example:
+        >>> get_todays_date()
+        '2023-10-03'
+    """
     try:
-        current_day = datetime.now()
+        current_day = datetime.today().strftime('%Y-%m-%d').strip()
 
         return current_day
     except Exception as error:

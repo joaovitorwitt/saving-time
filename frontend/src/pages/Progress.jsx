@@ -19,7 +19,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Notes from "../components/Notes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 import WeeklyReport from "../components/WeeklyReport";
 
 export default function Progress() {
@@ -45,18 +45,19 @@ export default function Progress() {
       },
       title: {
         display: true,
-        text: "Mock Data",
+        text: "Daily Report",
       },
     },
   };
 
+  // Display different daytimes here
   const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Hours",
         // get the day of the week that the user had the longest focus time and make it the max
         // alternatively get the day of the week that the user had the smallest focus time and make ut the min
         data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
@@ -68,6 +69,7 @@ export default function Progress() {
   // greeting message on progress page
   const [username, setUsername] = useState("");
   const [totalFocus, setTotalFocus] = useState("");
+  const [todaysFocus, setTodaysFocus] = useState("");
 
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -103,10 +105,26 @@ export default function Progress() {
     }
   }
 
+  async function fetchDailyFocusFromDatabase(userId) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/get/daily/report/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network error");
+      }
+      const data = await response.json();
+      setTodaysFocus(data.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   useEffect(() => {
     if (currentUser && currentUser.user_id) {
       getUsernameFromDatabase(currentUser.user_id);
       fetchTotalFocusTimeFromDatabase(currentUser.user_id);
+      fetchDailyFocusFromDatabase(currentUser.user_id);
     } else {
       console.log("You are not logged in");
       navigate("/login");
@@ -137,6 +155,16 @@ export default function Progress() {
                 <h3>Total Focus</h3>
                 <p>
                   {totalFocus} {totalFocus === 1 ? "hour" : "hours"}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid-4-data-container">
+              <FontAwesomeIcon icon={faCalendarDay} />
+              <div className="grid-4-data">
+                <h3>Today's Focus</h3>
+                <p>
+                  {todaysFocus} {todaysFocus === 1 ? "Hour" : "Hours"}
                 </p>
               </div>
             </div>
