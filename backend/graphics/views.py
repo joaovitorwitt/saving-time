@@ -40,11 +40,13 @@ def get_user_total_focus_time(request, id):
         lifetime_focus = UserProgressReport.objects.filter(user=id).aggregate(total_focus=Sum('focus_time'))
         total_focus_time = lifetime_focus['total_focus']
 
-        return Response({"message": "here is your overall focus time", "data": total_focus_time})
+        # this convertion might break !!!!!
+        return Response({"message": "here is your overall focus time", "data": round(total_focus_time, 1)})
     except Exception as error:
         return Response({"message": str(error)})
 
 
+# TODO: change this functions name (remove 'total' since we are only updating todays focus)
 @api_view(['PUT'])
 def update_total_focus_time(request, id):
     try:

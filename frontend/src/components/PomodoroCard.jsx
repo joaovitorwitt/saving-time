@@ -205,9 +205,10 @@ export default function PomodoroCard() {
     console.log(`INITIAL FOCUS IS: ${holdInitialFocus}`);
     console.log(`TIME PAUSED: ${holdTimePaused}`);
     console.log(`TOTAL FOCUS TIME: ${valueToApi}`);
-    // convert to hours before sending to the database
-    // this is in minutes right now
-    return (valueToApi / 60).toFixed(2);
+    // converted to hours
+    // TODO: fix conversion decimal points before sending it to the API
+    // `toFixed()` might to the work
+    return valueToApi / 3600;
   }
 
   useEffect(() => {

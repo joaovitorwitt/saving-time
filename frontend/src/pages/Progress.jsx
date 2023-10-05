@@ -15,7 +15,7 @@ import {
 import { Line } from "react-chartjs-2";
 // FAKER DATA
 import { faker } from "@faker-js/faker";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Notes from "../components/Notes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -89,6 +89,8 @@ export default function Progress() {
     }
   }
 
+  // this is getting called 4 times
+  const hasFetchedTotalFocusTime = useRef(false);
   async function fetchTotalFocusTimeFromDatabase(userId) {
     try {
       const response = await fetch(
@@ -122,13 +124,19 @@ export default function Progress() {
 
   useEffect(() => {
     if (currentUser && currentUser.user_id) {
-      getUsernameFromDatabase(currentUser.user_id);
-      fetchTotalFocusTimeFromDatabase(currentUser.user_id);
-      fetchDailyFocusFromDatabase(currentUser.user_id);
+      if (hasFetchedTotalFocusTime.current === false) {
+        getUsernameFromDatabase(currentUser.user_id);
+        fetchTotalFocusTimeFromDatabase(currentUser.user_id);
+        fetchDailyFocusFromDatabase(currentUser.user_id);
+      }
     } else {
       console.log("You are not logged in");
       navigate("/login");
     }
+
+    return () => {
+      hasFetchedTotalFocusTime.current = true;
+    };
   }, [currentUser, navigate]);
 
   return (

@@ -1,6 +1,6 @@
 import PomodoroCard from "../components/PomodoroCard";
 import Navbar from "../components/Navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function HomePage() {
   console.log("HOMEPAGE RENDERED");
@@ -50,8 +50,6 @@ export default function HomePage() {
   let currentDate = getCurrentDateFormatted();
   let currentWeekNumber = getCurrentWeekNumber();
 
-  const [hasFetchedData, setHasFetchedData] = useState(false);
-
   useEffect(() => {
     if (currentUser && currentUser.user_id) {
       localStorage.getItem("pomodoroSessionData");
@@ -60,33 +58,40 @@ export default function HomePage() {
     }
   }, [currentUser]); // useEffect will be triggered once the currentUser changes
 
+  const hasCreatedUser = useRef(false);
   useEffect(() => {
-    if (currentUser && currentUser.user_id && !hasFetchedData) {
-      try {
-        fetch(`http://127.0.0.1:8000/api/v1/create/focus_instance`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: currentUser.user_id,
-            focus_time: 0.0,
-            day_of_the_week: currentDayOfTheWeek,
-            date: currentDate,
-            week_number: currentWeekNumber,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            // Set the state inside a functional update to ensure it's based on the previous state
-            setHasFetchedData(true);
-            console.log(data);
-          });
-      } catch (error) {
-        throw new Error(error);
-      }
+    if (hasCreatedUser.current === false) {
+      const createUserInstance = async () => {
+        try {
+          fetch(`http://127.0.0.1:8000/api/v1/create/focus_instance`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user: currentUser.user_id,
+              focus_time: 0.0,
+              day_of_the_week: currentDayOfTheWeek,
+              date: currentDate,
+              week_number: currentWeekNumber,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Set the state inside a functional update to ensure it's based on the previous state
+              console.log("message:", data);
+            });
+        } catch (error) {
+          throw new Error(error);
+        }
+      };
+
+      createUserInstance();
+      return () => {
+        hasCreatedUser.current = true;
+      };
     }
-  }, [hasFetchedData]);
+  }, []);
 
   return (
     <>
