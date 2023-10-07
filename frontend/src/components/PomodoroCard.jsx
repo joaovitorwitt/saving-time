@@ -95,13 +95,17 @@ export default function PomodoroCard() {
     );
     setIsPomodoroRunning(true);
     // playStartSound();
+    console.log(isPomodoroRunning);
+    localStorage.setItem("isPomodoroRunning", true);
     console.log("TIMER STARTED");
+    console.log("PREVENT USER FROM EXITING THE PAGE IF THE TIMER IS RUNNING");
   }
 
   function pauseTimer() {
     clearInterval(timerInterval);
     setIsPomodoroRunning(false);
     console.log("TIMER PAUSED");
+    localStorage.setItem("isPomodoroRunning", false);
     setInitialFocus(seconds);
     timePaused = seconds;
     let totalFocus = calculateCurrentFocusTime(initialFocus, timePaused);
@@ -114,6 +118,7 @@ export default function PomodoroCard() {
     clearInterval(timerInterval);
     setButtonText("Start");
     setIsPomodoroRunning(false);
+    localStorage.setItem("isPomodoroRunning", false);
     setInitialFocus(pomodoroTimer[0] * 60);
     if (currentSession === "Pomodoro") {
       setSeconds(parseInt(pomodoroTimer) * 60);
@@ -205,9 +210,7 @@ export default function PomodoroCard() {
     console.log(`INITIAL FOCUS IS: ${holdInitialFocus}`);
     console.log(`TIME PAUSED: ${holdTimePaused}`);
     console.log(`TOTAL FOCUS TIME: ${valueToApi}`);
-    // converted to hours
-    // TODO: fix conversion decimal points before sending it to the API
-    // `toFixed()` might to the work
+    // Right now decimal conversion is being done thorugh the API
     return valueToApi / 3600;
   }
 

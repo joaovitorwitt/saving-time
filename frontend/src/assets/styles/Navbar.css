@@ -19,6 +19,16 @@
   z-index: 999;
 }
 
+/* active means that the timer is running so we need to hide the navbar */
+[data-timer="active"] {
+  --navbar-display: none;
+}
+
+/* inactive means that the timer is no longer running so we display the navbar */
+[data-timer="inactive"] {
+  --navbar-display: block;
+}
+
 .navbar-nav {
   list-style: none;
   padding: 0;
@@ -31,6 +41,7 @@
 
 .navbar-item {
   width: 100%;
+  display: var(--navbar-display);
 }
 
 .navbar-item:last-child {

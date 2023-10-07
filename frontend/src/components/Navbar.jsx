@@ -23,6 +23,10 @@ export default function Navbar() {
 
   const isLoggedIn = localStorage.getItem("userInfo") ? true : false;
 
+  // sidebar hidden feature when user has the timer running
+  const isPomodoroRunning =
+    localStorage.getItem("isPomodoroRunning") === true ? "active" : "inactive";
+
   function logoutUser() {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("pomodoroSessionData");
@@ -40,28 +44,28 @@ export default function Navbar() {
 
         {isLoggedIn ? (
           <>
-            <li className="navbar-item">
+            <li className="navbar-item" data-timer={isPomodoroRunning}>
               <Link to={"/progress"} className="navbar-link">
                 <FontAwesomeIcon className="navbar-icon" icon={faChartColumn} />
                 <span className="navbar-text">Progress</span>
               </Link>
             </li>
 
-            <li className="navbar-item">
+            <li className="navbar-item" data-timer={isPomodoroRunning}>
               <Link to={"/settings"} className="navbar-link">
                 <FontAwesomeIcon className="navbar-icon" icon={faGear} />
                 <span className="navbar-text">Settings</span>
               </Link>
             </li>
 
-            <li className="navbar-item">
+            <li className="navbar-item" data-timer={isPomodoroRunning}>
               <Link to={"/profile"} className="navbar-link">
                 <FontAwesomeIcon className="navbar-icon" icon={faUser} />
                 <span className="navbar-text">Profile</span>
               </Link>
             </li>
 
-            <li className="navbar-item">
+            <li className="navbar-item" data-timer={isPomodoroRunning}>
               <Link to={"/login"} className="navbar-link" onClick={logoutUser}>
                 <FontAwesomeIcon
                   className="navbar-icon"
