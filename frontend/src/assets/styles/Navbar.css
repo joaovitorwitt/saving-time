@@ -16,17 +16,7 @@
   background-color: var(--navbar-background-color);
   position: fixed;
   transition: width 400ms ease;
-  z-index: 999;
-}
-
-/* active means that the timer is running so we need to hide the navbar */
-[data-timer="active"] {
-  --navbar-display: none;
-}
-
-/* inactive means that the timer is no longer running so we display the navbar */
-[data-timer="inactive"] {
-  --navbar-display: block;
+  z-index: 998;
 }
 
 .navbar-nav {
@@ -41,7 +31,6 @@
 
 .navbar-item {
   width: 100%;
-  display: var(--navbar-display);
 }
 
 .navbar-item:last-child {
@@ -62,7 +51,6 @@
   filter: grayscale(0%) opacity(1);
   color: var(--navbar-icon-color-hover);
   background-color: var(--navbar-icon-hover);
-  /* transition: 6000ms; */
 }
 
 .navbar-text {

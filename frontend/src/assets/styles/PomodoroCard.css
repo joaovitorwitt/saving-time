@@ -10,8 +10,20 @@
   --pomodoro-timer-color: #23232e;
 }
 
+/* true means that the timer is running so we need to hide the sidebar */
+[data-index="true"] {
+  --sidebar-state: 999;
+}
+
+/* false means that the timer is no running so we need to display the sidebar */
+[data-index="false"] {
+  --sidebar-state: 997;
+}
+
 .pomodoro-card {
   background-color: var(--pomodoro-primary-background-color);
+  z-index: var(--sidebar-state);
+  position: relative;
 }
 
 .pomodoro-card > .container {

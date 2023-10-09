@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import startSound from "../assets/sounds/start.wav";
 import pauseSound from "../assets/sounds/pause.wav";
 import resetSound from "../assets/sounds/reset.wav";
@@ -39,6 +39,9 @@ export default function PomodoroCard() {
   // feature for updating total focus time
   let timePaused;
   const [initialFocus, setInitialFocus] = useState(pomodoroTimer[0] * 60);
+
+  // hide sidebar feature
+  const [zindex, setZindex] = useState(997);
 
   useEffect(() => {
     if (seconds <= 0 && currentSession === "Pomodoro") {
@@ -87,6 +90,8 @@ export default function PomodoroCard() {
     }
   }
 
+  // set z-index directly in the function
+
   function startTimer() {
     setTimerInterval(
       setInterval(() => {
@@ -95,6 +100,7 @@ export default function PomodoroCard() {
     );
     setIsPomodoroRunning(true);
     // playStartSound();
+    setZindex(999);
     console.log(isPomodoroRunning);
     localStorage.setItem("isPomodoroRunning", true);
     console.log("TIMER STARTED");
@@ -107,6 +113,7 @@ export default function PomodoroCard() {
     console.log("TIMER PAUSED");
     localStorage.setItem("isPomodoroRunning", false);
     setInitialFocus(seconds);
+    setZindex(997);
     timePaused = seconds;
     let totalFocus = calculateCurrentFocusTime(initialFocus, timePaused);
     console.log(totalFocus);
@@ -116,6 +123,7 @@ export default function PomodoroCard() {
 
   function resetTimer() {
     clearInterval(timerInterval);
+    setZindex(997);
     setButtonText("Start");
     setIsPomodoroRunning(false);
     localStorage.setItem("isPomodoroRunning", false);
@@ -156,6 +164,8 @@ export default function PomodoroCard() {
     }
   });
 
+  // this is being called twice
+  const hasFetchedUserInformation = useRef(false);
   async function getUserInformationFromDatabase(userId) {
     try {
       const response = await fetch(
@@ -176,7 +186,6 @@ export default function PomodoroCard() {
     }
   }
 
-  // TODO: finish this request
   async function updateTotalFocusTime(totalFocus) {
     try {
       const response = await fetch(
@@ -233,7 +242,11 @@ export default function PomodoroCard() {
   }, []);
 
   return (
-    <section className="pomodoro-card" data-theme={currentTheme}>
+    <section
+      className="pomodoro-card"
+      data-theme={currentTheme}
+      style={{ zIndex: zindex }}
+    >
       <h1 className="user-greet-message">{greeting}</h1>
       <div className="container">
         <p>Session: {currentSession}</p>

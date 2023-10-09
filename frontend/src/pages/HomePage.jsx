@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState, useRef } from "react";
 
 export default function HomePage() {
-  console.log("HOMEPAGE RENDERED");
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
 
   function getCurrentDayOfTheWeek() {
@@ -58,6 +57,7 @@ export default function HomePage() {
     }
   }, [currentUser]); // useEffect will be triggered once the currentUser changes
 
+  // This method ensures that the API will only run once
   const hasCreatedUser = useRef(false);
   useEffect(() => {
     if (hasCreatedUser.current === false) {
