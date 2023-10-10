@@ -90,8 +90,6 @@ export default function PomodoroCard() {
     }
   }
 
-  // set z-index directly in the function
-
   function startTimer() {
     setTimerInterval(
       setInterval(() => {
@@ -117,7 +115,6 @@ export default function PomodoroCard() {
     timePaused = seconds;
     let totalFocus = calculateCurrentFocusTime(initialFocus, timePaused);
     console.log(totalFocus);
-    // SEND UPDATE TOTAL FOCUS REQUEST HERE???
     updateTotalFocusTime(totalFocus);
   }
 
@@ -134,6 +131,7 @@ export default function PomodoroCard() {
       setSeconds(parseInt(shortBreakTimer) * 60);
     }
     // playResetSound();
+    //  TODO: update total focus on reset || should we display the reset button if the timer is running?
     console.log("TIMER RESET");
   }
 
