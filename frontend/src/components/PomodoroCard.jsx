@@ -163,7 +163,7 @@ export default function PomodoroCard() {
   });
 
   // this is being called twice
-  const hasFetchedUserInformation = useRef(false);
+  const hasFetchedUsernameFromDatabase = useRef(false);
   async function getUserInformationFromDatabase(userId) {
     try {
       const response = await fetch(
@@ -218,6 +218,7 @@ export default function PomodoroCard() {
     console.log(`TIME PAUSED: ${holdTimePaused}`);
     console.log(`TOTAL FOCUS TIME: ${valueToApi}`);
     // Right now decimal conversion is being done thorugh the API
+    // This is being sent in hours
     return valueToApi / 3600;
   }
 
@@ -235,6 +236,7 @@ export default function PomodoroCard() {
         JSON.stringify(pomodoroSessionData)
       );
     } else {
+      // add use effect here
       getUserInformationFromDatabase(currentUserID.user_id);
     }
   }, []);

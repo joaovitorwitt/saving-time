@@ -29,7 +29,7 @@ def get_users_daily_report(request, id):
         today = get_todays_date()
         user_daily_focus = UserProgressReport.objects.filter(user=id, date=today).first()
         user_daily_focus_serializer = UserProgressReportSerializer(user_daily_focus)
-        return Response({"message": "here is your daily report", "data": user_daily_focus_serializer.data['focus_time']})
+        return Response({"message": "here is your daily report", "data": round(user_daily_focus_serializer.data['focus_time'], 3)})
     except Exception as error:
         return Response({"message": str(error)}) 
     

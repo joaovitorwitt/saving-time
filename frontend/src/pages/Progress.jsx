@@ -23,7 +23,6 @@ import { faClock, faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 import WeeklyReport from "../components/WeeklyReport";
 
 export default function Progress() {
-  console.log("PROGRESS COMPONENT RENDERED");
   const { currentTheme } = useTheme();
   const navigate = useNavigate();
 
