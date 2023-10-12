@@ -6,6 +6,7 @@ import endSound from "../assets/sounds/end.wav";
 import Button from "./Button";
 import "../assets/styles/PomodoroCard.css";
 import { useTheme } from "../main";
+import Notes from "./Notes";
 
 export default function PomodoroCard() {
   const { currentTheme } = useTheme();

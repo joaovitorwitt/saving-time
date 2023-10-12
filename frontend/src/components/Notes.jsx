@@ -56,7 +56,7 @@ export default function Notes() {
         body: JSON.stringify({
           title,
           content,
-          user_id,
+          userId,
         }),
       });
 
