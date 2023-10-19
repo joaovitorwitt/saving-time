@@ -8,6 +8,7 @@ import {
   faSun,
   faMoon,
   faRightToBracket,
+  faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import "../assets/styles/Navbar.css";
@@ -64,6 +65,13 @@ export default function Navbar() {
               <Link to={"/progress"} className="navbar-link">
                 <FontAwesomeIcon className="navbar-icon" icon={faChartColumn} />
                 <span className="navbar-text">Progress</span>
+              </Link>
+            </li>
+
+            <li className="navbar-item" data-timer={shouldShowSidebar}>
+              <Link to={"/notes"} className="navbar-link">
+                <FontAwesomeIcon className="navbar-icon" icon={faNoteSticky} />
+                <span className="navbar-text">Notes</span>
               </Link>
             </li>
 

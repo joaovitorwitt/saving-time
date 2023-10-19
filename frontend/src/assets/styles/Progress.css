@@ -57,7 +57,7 @@
 @media screen and (max-width: 600px) {
   .progress-page {
     margin-left: 0;
-    height: calc(100vh + 12rem); /**/
+    height: calc(100vh + 12rem);
   }
 
   .graphic-card-1 {

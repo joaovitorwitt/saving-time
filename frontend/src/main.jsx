@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RegisterPage from "./pages/RegisterPage";
 import Profile from "./pages/Profile";
+import Notes from "./components/Notes";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/notes",
+    element: <Notes />,
     errorElement: <ErrorPage />,
   },
 ]);
